@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:zefyr/zefyr.dart';
 
@@ -19,13 +21,38 @@ class _MyEditorPageState extends State<MyEditorPage> {
   final FocusNode _focusNode = FocusNode();
 
   bool _darkTheme = true;
+  bool showHint = true;
 
+  @override
+  void initState() {
+    print('initState');
+
+    _controller.document.changes.listen((change) {
+      setState(() {
+      //获取数据的方式有一些
+      /* _delta = _zefyrController.document.toDelta();
+        json = _zefyrController.document.toJson();
+        string = _zefyrController.document.toString();
+        plainText = _zefyrController.document.toPlainText();
+         */
+        var string = _controller.document.toPlainText();
+        print(string.length);
+
+        this.setState((){
+          showHint = string.length < 2;
+        });
+      });
+    });
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
     final form = ListView(
       children: <Widget>[
         TextField(decoration: InputDecoration(hintText: '请输入标题')),
-        buildEditor()
+        buildEditor(),
+        Text(this.showHint ? '开始讲述你的故事...': '', style: TextStyle(color: Colors.black38)),
       ],
     );
 
@@ -77,7 +104,7 @@ class _MyEditorPageState extends State<MyEditorPage> {
   Widget buildEditor() {
     return ZefyrField(
       height: 200.0,
-      decoration: InputDecoration(hintText: '开始讲述你的故事...'),
+      decoration: InputDecoration(hintText: ''),
       controller: _controller,
       focusNode: _focusNode,
       autofocus: false,
