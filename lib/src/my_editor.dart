@@ -29,30 +29,34 @@ class _MyEditorPageState extends State<MyEditorPage> {
 
     _controller.document.changes.listen((change) {
       setState(() {
-      //获取数据的方式有一些
-      /* _delta = _zefyrController.document.toDelta();
+        //获取数据的方式有一些
+        /* _delta = _zefyrController.document.toDelta();
         json = _zefyrController.document.toJson();
         string = _zefyrController.document.toString();
         plainText = _zefyrController.document.toPlainText();
          */
-        var string = _controller.document.toPlainText();
-        print(string.length);
+        bool isEmpty = _controller.document.length == 1;
+        //print(string.length);
 
-        this.setState((){
-          showHint = string.length < 2;
-        });
+        if (this.showHint != isEmpty) {
+          this.setState(() {
+            showHint = isEmpty;
+          });
+        }
       });
     });
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    final form = ListView(
+    final form = Column(
       children: <Widget>[
-        TextField(decoration: InputDecoration(hintText: '请输入标题')),
+        TextField(
+            decoration: InputDecoration(
+                hintText: '请输入标题',
+                hintStyle: TextStyle(color: Colors.black38, fontSize: 14))),
         buildEditor(),
-        Text(this.showHint ? '开始讲述你的故事...': '', style: TextStyle(color: Colors.black38)),
       ],
     );
 
@@ -70,14 +74,14 @@ class _MyEditorPageState extends State<MyEditorPage> {
           ),
           Container(
             width: 72,
-            margin: EdgeInsets.only(right:6),
+            margin: EdgeInsets.only(right: 6),
             child: FlatButton(
               padding: EdgeInsets.symmetric(horizontal: 0),
               child: Text('发表', style: TextStyle(color: Colors.white)),
               onPressed: () {},
             ),
           ),
-          
+
           /* PopupMenuButton<_Options>(
             itemBuilder: buildPopupMenu,
             onSelected: handlePopupItemSelected,
@@ -86,7 +90,7 @@ class _MyEditorPageState extends State<MyEditorPage> {
       ),
       body: ZefyrScaffold(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
           child: form,
         ),
       ),
@@ -102,15 +106,26 @@ class _MyEditorPageState extends State<MyEditorPage> {
   }
 
   Widget buildEditor() {
-    return ZefyrField(
-      height: 200.0,
-      decoration: InputDecoration(hintText: ''),
-      controller: _controller,
-      focusNode: _focusNode,
-      autofocus: false,
-      imageDelegate: CustomImageDelegate(),
-      physics: ClampingScrollPhysics(),
-    );
+    return Expanded(
+        child: Stack(
+      children: <Widget>[
+        ZefyrField(
+          height: 300.0,
+          decoration: InputDecoration(
+              hintText: '', // 去掉默认的hint，不知道为啥就是不能顶部对齐。
+              border: InputBorder.none),
+          controller: _controller,
+          focusNode: _focusNode,
+          autofocus: false,
+          imageDelegate: CustomImageDelegate(),
+          physics: ClampingScrollPhysics(),
+        ),
+        Positioned(
+            top: 20,
+            child: IgnorePointer(child:Text(this.showHint ? '开始讲述你的故事...' : '',
+                style: TextStyle(color: Colors.black38)))),
+      ],
+    ));
   }
 
   void handlePopupItemSelected(value) {

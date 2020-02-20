@@ -19,7 +19,7 @@ class FullPageEditorScreen extends StatefulWidget {
 
 
 final doc =
-    r'[{"insert":""},{"insert":"\n"}]';
+    r'[{"insert":"\n"}]';
 
 
 Delta getDelta() {
