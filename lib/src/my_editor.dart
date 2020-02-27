@@ -1,27 +1,32 @@
-// Copyright (c) 2018, the Zefyr project authors.  Please see the AUTHORS file
-// for details. All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:zefyr/zefyr.dart';
+import 'package:quill_delta/quill_delta.dart';
+import 'dart:convert';
 
 import 'images.dart';
 
-enum _Options { darkTheme }
-
 class MyEditorPage extends StatefulWidget {
+  final bool darkTheme;
+  MyEditorPage(this.darkTheme, {Key key}) : super(key: key);
+
   @override
   _MyEditorPageState createState() => _MyEditorPageState();
 }
 
+String initText;
+//String initText = r'[{"insert":"Test"}, {"insert":"\n"}]';
+
+Delta getDelta() {
+  return Delta.fromJson(json.decode(initText) as List);
+}
+
 class _MyEditorPageState extends State<MyEditorPage> {
-  final ZefyrController _controller = ZefyrController(NotusDocument());
+  final ZefyrController _controller = ZefyrController(
+      initText == null ? NotusDocument() : NotusDocument.fromDelta(getDelta()));
   final FocusNode _focusNode = FocusNode();
 
-  bool _darkTheme = true;
-  bool showHint = true;
+  //bool _darkTheme = true;
+  bool showHint = initText == null || initText.length == 0;
 
   @override
   void initState() {
@@ -53,9 +58,16 @@ class _MyEditorPageState extends State<MyEditorPage> {
     final form = Column(
       children: <Widget>[
         TextField(
+            keyboardType: TextInputType.multiline,
+            maxLines: null, // 通过设置keyboardType自动换行
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
             decoration: InputDecoration(
                 hintText: '请输入标题',
-                hintStyle: TextStyle(color: Colors.black38, fontSize: 14))),
+                hintStyle: TextStyle(color: Colors.black38, fontWeight: FontWeight.normal),
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.fromLTRB(16, 24, 16, 0),
+                )),
+                //Container(height: 20, color: Colors.green,),
         buildEditor(),
       ],
     );
@@ -63,6 +75,8 @@ class _MyEditorPageState extends State<MyEditorPage> {
     final result = Scaffold(
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
+        //leading: Icon(Icons.arrow_back_ios, size: 18),
+        elevation: 0,
         actions: [
           Container(
             width: 72,
@@ -78,31 +92,30 @@ class _MyEditorPageState extends State<MyEditorPage> {
             child: FlatButton(
               padding: EdgeInsets.symmetric(horizontal: 0),
               child: Text('发表', style: TextStyle(color: Colors.white)),
-              onPressed: () {},
+              onPressed: () {
+                String text = _controller.document.toJson().toString();
+                print("发表：$text");
+              },
             ),
           ),
-
-          /* PopupMenuButton<_Options>(
-            itemBuilder: buildPopupMenu,
-            onSelected: handlePopupItemSelected,
-          ) */
         ],
       ),
       body: ZefyrScaffold(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+        /* child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
           child: form,
-        ),
+        ), */
+        child:form,
       ),
     );
 
-    /* if (_darkTheme) {
+    if (widget.darkTheme) {
       return Theme(data: ThemeData.dark(), child: result);
     } else {
-      return Theme(data: ThemeData(primarySwatch: Colors.cyan), child: result);
-    } */
+      return Theme(data: ThemeData(primarySwatch: Colors.blue), child: result);
+    }
 
-    return result;
+    //return result;
   }
 
   Widget buildEditor() {
@@ -110,7 +123,7 @@ class _MyEditorPageState extends State<MyEditorPage> {
         child: Stack(
       children: <Widget>[
         ZefyrField(
-          height: 300.0,
+          height: double.infinity,        
           decoration: InputDecoration(
               hintText: '', // 去掉默认的hint，不知道为啥就是不能顶部对齐。
               border: InputBorder.none),
@@ -122,13 +135,16 @@ class _MyEditorPageState extends State<MyEditorPage> {
         ),
         Positioned(
             top: 20,
-            child: IgnorePointer(child:Text(this.showHint ? '开始讲述你的故事...' : '',
-                style: TextStyle(color: Colors.black38)))),
+            left: 16,
+            child: IgnorePointer(
+                // 使用IgnorePointer不响应事件，防止挡住后面。
+                child: Text(this.showHint ? '开始讲述你的故事...' : '',
+                    style: TextStyle(color: Colors.black38, fontSize: 15)))),
       ],
     ));
   }
 
-  void handlePopupItemSelected(value) {
+  /* void handlePopupItemSelected(value) {
     if (!mounted) return;
     setState(() {
       if (value == _Options.darkTheme) {
@@ -145,5 +161,5 @@ class _MyEditorPageState extends State<MyEditorPage> {
         checked: _darkTheme,
       ),
     ];
-  }
+  } */
 }

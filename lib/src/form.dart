@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:zefyr/zefyr.dart';
 
+import 'full_page.dart';
 import 'images.dart';
 
 enum _Options { darkTheme }
@@ -33,7 +34,7 @@ class _FormEmbeddedScreenState extends State<FormEmbeddedScreen> {
     final result = Scaffold(
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
-        title: Text('form'),
+        title: ZefyrLogo(),
         actions: [
           PopupMenuButton<_Options>(
             itemBuilder: buildPopupMenu,

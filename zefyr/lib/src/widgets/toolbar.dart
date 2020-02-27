@@ -76,21 +76,32 @@ class ZefyrToolbarScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ZefyrTheme.of(context).toolbarTheme;
-    final toolbar = ZefyrToolbar.of(context);
+    //final toolbar = ZefyrToolbar.of(context);
     final constraints =
         BoxConstraints.tightFor(height: ZefyrToolbar.kToolbarHeight);
-    final children = <Widget>[
-      Expanded(child: body),
-    ];
 
-    if (trailing != null) {
-      children.add(trailing);
+    /* final children = <Widget>[
+      this.trailing,
+      Expanded(child: Container()),
+      this.body,
+    ]; */
+
+    /* if (trailing != null) {
+      children.insert(0, trailing);
+      //children.add(trailing);
     } else if (autoImplyTrailing) {
       children.add(toolbar.buildButton(context, ZefyrToolbarAction.close));
-    }
+    } */
+
     return Container(
       constraints: constraints,
-      child: Material(color: theme.color, child: Row(children: children)),
+      child: Material(
+          color: theme.color,
+          child: Row(children: [
+            this.trailing,
+            Expanded(child: Container()),
+            this.body,
+          ])),
     );
   }
 }
@@ -102,7 +113,7 @@ class ZefyrToolbar extends StatefulWidget implements PreferredSizeWidget {
   const ZefyrToolbar({
     Key key,
     @required this.editor,
-    this.autoHide = true,
+    this.autoHide = false,
     this.delegate,
   }) : super(key: key);
 
@@ -140,30 +151,30 @@ class _ZefyrToolbarScope extends InheritedWidget {
 class ZefyrToolbarState extends State<ZefyrToolbar>
     with SingleTickerProviderStateMixin {
   final Key _toolbarKey = UniqueKey();
-  final Key _overlayKey = UniqueKey();
+  //final Key _overlayKey = UniqueKey();
 
   ZefyrToolbarDelegate _delegate;
-  AnimationController _overlayAnimation;
-  WidgetBuilder _overlayBuilder;
-  Completer<void> _overlayCompleter;
+  //AnimationController _overlayAnimation;
+  //WidgetBuilder _overlayBuilder;
+  //Completer<void> _overlayCompleter;
 
-  TextSelection _selection;
+  //TextSelection _selection;
 
-  void markNeedsRebuild() {
+  /* void markNeedsRebuild() {
     setState(() {
       if (_selection != editor.selection) {
         _selection = editor.selection;
         closeOverlay();
-      }
+      }_selection
     });
-  }
+  } */
 
   Widget buildButton(BuildContext context, ZefyrToolbarAction action,
       {VoidCallback onPressed}) {
     return _delegate.buildButton(context, action, onPressed: onPressed);
   }
 
-  Future<void> showOverlay(WidgetBuilder builder) async {
+  /* Future<void> showOverlay(WidgetBuilder builder) async {
     assert(_overlayBuilder == null);
     final completer = Completer<void>();
     setState(() {
@@ -172,7 +183,7 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
       _overlayAnimation.forward();
     });
     return completer.future;
-  }
+  } 
 
   void closeOverlay() {
     if (!hasOverlay) return;
@@ -184,8 +195,8 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
       });
     });
   }
-
-  bool get hasOverlay => _overlayBuilder != null;
+*/
+  //bool get hasOverlay => _overlayBuilder != null;
 
   ZefyrScope get editor => widget.editor;
 
@@ -193,9 +204,9 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
   void initState() {
     super.initState();
     _delegate = widget.delegate ?? _DefaultZefyrToolbarDelegate();
-    _overlayAnimation =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 100));
-    _selection = editor.selection;
+    //_overlayAnimation =
+    //    AnimationController(vsync: this, duration: Duration(milliseconds: 100));
+    // _selection = editor.selection;
   }
 
   @override
@@ -208,7 +219,7 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
 
   @override
   void dispose() {
-    _overlayAnimation.dispose();
+    //_overlayAnimation.dispose();
     super.dispose();
   }
 
@@ -226,7 +237,7 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
 
     layers.add(toolbar);
 
-    if (hasOverlay) {
+    /* if (hasOverlay) {
       Widget widget = Builder(builder: _overlayBuilder);
       assert(widget != null);
       final overlay = FadeTransition(
@@ -235,35 +246,108 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
         child: widget,
       );
       layers.add(overlay);
-    }
+    } */
 
     final constraints =
         BoxConstraints.tightFor(height: ZefyrToolbar.kToolbarHeight);
     return _ZefyrToolbarScope(
       toolbar: this,
-      child: Container(
-        constraints: constraints,
-        child: Stack(children: layers),
-      ),
+      child:
+          Container(constraints: constraints, child: Stack(children: layers)),
     );
   }
 
   List<Widget> _buildButtons(BuildContext context) {
     final buttons = <Widget>[
-      buildButton(context, ZefyrToolbarAction.bold),
-      buildButton(context, ZefyrToolbarAction.italic),
-      LinkButton(),
-      HeadingButton(),
+      //buildButton(context, ZefyrToolbarAction.bold),
+      //buildButton(context, ZefyrToolbarAction.italic),
+      //LinkButton(),
+      //HeadingButton(),
       buildButton(context, ZefyrToolbarAction.bulletList),
-      buildButton(context, ZefyrToolbarAction.numberList),
+      //buildButton(context, ZefyrToolbarAction.numberList),
       buildButton(context, ZefyrToolbarAction.quote),
-      buildButton(context, ZefyrToolbarAction.code),
+      //buildButton(context, ZefyrToolbarAction.code),
       buildButton(context, ZefyrToolbarAction.horizontalRule),
-      if (editor.imageDelegate != null) ImageButton(),
+
+      //if (editor.imageDelegate != null) ImageButton(),
+
+      //ImageButton(),
+      //buildImagePopMenu(),
+
+      IconButton(
+          icon: Icon(Icons.image, color: Colors.white),
+          onPressed: () => {
+                //print('test');
+                //pickFromGallery()
+
+                //selectImageMethod()
+                showImageDialog()
+              }),
+
+      SizedBox(width: 8), // 间隔
     ];
     return buttons;
   }
+
+  void showImageDialog() {
+    showModalBottomSheet<void>(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context) => ClipRRect(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.0),
+                topRight: Radius.circular(16.0)),
+            child: Container(
+                height: 200,
+                color: Colors.white.withOpacity(0.9),
+                padding: EdgeInsets.symmetric(vertical: 24),
+                child: Column(children: <Widget>[
+                  getMenuItem(Icons.photo_camera, '拍照', () {
+                    Navigator.of(context).pop();
+                    pickFromCamera();
+                  }),
+                  getMenuItem(Icons.photo_library, '从相册选择', () {
+                    Navigator.of(context).pop();
+                    pickFromGallery();
+                  }),
+                  getMenuItem(Icons.close, '退出', () {
+                    Navigator.of(context).pop();
+                  }),
+                ]))));
+  }
+
+  Widget getMenuItem(IconData icon, String title, Function onPressed) {
+    return FlatButton(
+        child: Row(
+          children: <Widget>[
+            Icon(icon),
+            SizedBox(height: 50, width: 12),
+            Text(title)
+          ],
+        ),
+        onPressed: onPressed);
+  }
+
+  void pickFromGallery() async {
+    final image = await editor.imageDelegate
+        .pickImage(editor.imageDelegate.gallerySource);
+    if (image != null) {
+      print(image);
+      NotusAttribute value = NotusAttribute.embed.image(image);
+      print(value);
+      editor.formatSelection(value);
+    }
+  }
+
+  void pickFromCamera() async {
+    final image =
+        await editor.imageDelegate.pickImage(editor.imageDelegate.cameraSource);
+    if (image != null) {
+      editor.formatSelection(NotusAttribute.embed.image(image));
+    }
+  }
 }
+
 
 /// Scrollable list of toolbar buttons.
 class ZefyrButtonList extends StatefulWidget {
@@ -275,32 +359,33 @@ class ZefyrButtonList extends StatefulWidget {
 }
 
 class _ZefyrButtonListState extends State<ZefyrButtonList> {
-  final ScrollController _controller = ScrollController();
-  bool _showLeftArrow = false;
-  bool _showRightArrow = false;
+  //final ScrollController _controller = ScrollController();
+  //bool _showLeftArrow = false;
+  //bool _showRightArrow = false;
 
   @override
   void initState() {
     super.initState();
-    _controller.addListener(_handleScroll);
+    //_controller.addListener(_handleScroll);
     // Workaround to allow scroll controller attach to our ListView so that
     // we can detect if overflow arrows need to be shown on init.
     // TODO: find a better way to detect overflow
-    Timer.run(_handleScroll);
+    //Timer.run(_handleScroll);
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = ZefyrTheme.of(context).toolbarTheme;
+    /* final theme = ZefyrTheme.of(context).toolbarTheme;
     final color = theme.iconColor;
     final list = ListView(
       scrollDirection: Axis.horizontal,
       controller: _controller,
       children: widget.buttons,
       physics: ClampingScrollPhysics(),
-    );
+    ); */
 
-    final leftArrow = _showLeftArrow
+    return Row(children: widget.buttons);
+    /* final leftArrow = _showLeftArrow
         ? Icon(Icons.arrow_left, size: 18.0, color: color)
         : null;
     final rightArrow = _showRightArrow
@@ -320,17 +405,17 @@ class _ZefyrButtonListState extends State<ZefyrButtonList> {
           child: Container(child: rightArrow, color: theme.color),
         ),
       ],
-    );
+    ); */
   }
 
-  void _handleScroll() {
+  /* void _handleScroll() {
     setState(() {
       _showLeftArrow =
           _controller.position.minScrollExtent != _controller.position.pixels;
       _showRightArrow =
           _controller.position.maxScrollExtent != _controller.position.pixels;
     });
-  }
+  } */
 }
 
 class _DefaultZefyrToolbarDelegate implements ZefyrToolbarDelegate {
@@ -346,11 +431,11 @@ class _DefaultZefyrToolbarDelegate implements ZefyrToolbarDelegate {
     ZefyrToolbarAction.numberList: Icons.format_list_numbered,
     ZefyrToolbarAction.code: Icons.code,
     ZefyrToolbarAction.quote: Icons.format_quote,
-    ZefyrToolbarAction.horizontalRule: Icons.remove,
+    ZefyrToolbarAction.horizontalRule: Icons.more_horiz,
     ZefyrToolbarAction.image: Icons.photo,
     ZefyrToolbarAction.cameraImage: Icons.photo_camera,
     ZefyrToolbarAction.galleryImage: Icons.photo_library,
-    ZefyrToolbarAction.hideKeyboard: Icons.keyboard_hide,
+    ZefyrToolbarAction.hideKeyboard: Icons.keyboard_arrow_down,
     ZefyrToolbarAction.close: Icons.close,
     ZefyrToolbarAction.confirm: Icons.check,
   };
@@ -361,6 +446,7 @@ class _DefaultZefyrToolbarDelegate implements ZefyrToolbarDelegate {
     ZefyrToolbarAction.openInBrowser: 20.0,
     ZefyrToolbarAction.close: 20.0,
     ZefyrToolbarAction.confirm: 20.0,
+    ZefyrToolbarAction.hideKeyboard: 26.0,
   };
 
   static const kDefaultButtonTexts = {

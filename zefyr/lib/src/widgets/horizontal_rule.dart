@@ -28,8 +28,8 @@ class ZefyrHorizontalRule extends LeafRenderObjectWidget {
 }
 
 class RenderHorizontalRule extends RenderEditableBox {
-  static const _kPaddingBottom = 24.0;
-  static const _kThickness = 3.0;
+  static const _kPaddingBottom = 60.0;  // 底部间距
+  static const _kThickness = 1.0; // 线条厚度
   static const _kHeight = _kThickness + _kPaddingBottom;
 
   RenderHorizontalRule({
@@ -76,9 +76,18 @@ class RenderHorizontalRule extends RenderEditableBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final rect = Rect.fromLTWH(0.0, 0.0, size.width, _kThickness);
-    final paint = ui.Paint()..color = Colors.grey.shade200;
-    context.canvas.drawRect(rect.shift(offset), paint);
+    //double padding = 40.0;
+    //final rect = Rect.fromLTWH(padding, 20.0, size.width - padding*2, _kThickness);
+    //final paint = ui.Paint()..color = Colors.grey.shade200;
+    //context.canvas.drawRect(rect.shift(offset), paint);
+    final paint = ui.Paint()..color = Colors.black45;
+    double center = size.width / 2;
+    double itemSize = 1.5;
+    double itemPadding = 20.0;
+    double dy = _kPaddingBottom/2;
+    context.canvas.drawCircle(Offset(center - itemPadding, dy), itemSize, paint);
+    context.canvas.drawCircle(Offset(center, dy), itemSize, paint);
+    context.canvas.drawCircle(Offset(center + itemPadding, dy), itemSize, paint);
   }
 
   @override

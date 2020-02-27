@@ -114,7 +114,7 @@ class ZefyrButton extends StatelessWidget {
         return () => _toggleAttribute(attribute, editor);
       }
     } else if (action == ZefyrToolbarAction.close) {
-      return () => toolbar.closeOverlay();
+      //return () => toolbar.closeOverlay();
     } else if (action == ZefyrToolbarAction.hideKeyboard) {
       return () => editor.hideKeyboard();
     }
@@ -218,7 +218,7 @@ class _HeadingButtonState extends State<HeadingButton> {
 
   void showOverlay() {
     final toolbar = ZefyrToolbar.of(context);
-    toolbar.showOverlay(buildOverlay);
+    //toolbar.showOverlay(buildOverlay);
   }
 
   Widget buildOverlay(BuildContext context) {
@@ -258,8 +258,8 @@ class _ImageButtonState extends State<ImageButton> {
   }
 
   void showOverlay() {
-    final toolbar = ZefyrToolbar.of(context);
-    toolbar.showOverlay(buildOverlay);
+    //final toolbar = ZefyrToolbar.of(context);
+    //toolbar.showOverlay(buildOverlay);
   }
 
   Widget buildOverlay(BuildContext context) {
@@ -336,12 +336,12 @@ class _LinkButtonState extends State<LinkButton> {
 
   void showOverlay() {
     final toolbar = ZefyrToolbar.of(context);
-    toolbar.showOverlay(buildOverlay).whenComplete(cancelEdit);
+    //toolbar.showOverlay(buildOverlay).whenComplete(cancelEdit);
   }
 
   void closeOverlay() {
     final toolbar = ZefyrToolbar.of(context);
-    toolbar.closeOverlay();
+    //toolbar.closeOverlay();
   }
 
   void edit() {
@@ -350,7 +350,7 @@ class _LinkButtonState extends State<LinkButton> {
       _inputKey = UniqueKey();
       _inputController.text = getLink('https://');
       _inputController.addListener(_handleInputChange);
-      toolbar.markNeedsRebuild();
+      //toolbar.markNeedsRebuild();
     });
   }
 
@@ -374,12 +374,12 @@ class _LinkButtonState extends State<LinkButton> {
       }
       if (error) {
         _formatError = error;
-        toolbar.markNeedsRebuild();
+        //toolbar.markNeedsRebuild();
       } else {
         _inputKey = null;
         _inputController.text = '';
         _inputController.removeListener(_handleInputChange);
-        toolbar.markNeedsRebuild();
+        //toolbar.markNeedsRebuild();
         toolbar.editor.focus();
       }
     });
@@ -423,7 +423,7 @@ class _LinkButtonState extends State<LinkButton> {
     final toolbar = ZefyrToolbar.of(context);
     setState(() {
       _formatError = false;
-      toolbar.markNeedsRebuild();
+      //toolbar.markNeedsRebuild();
     });
   }
 
@@ -465,13 +465,16 @@ class _LinkButtonState extends State<LinkButton> {
     final trailingAction =
         isEditing ? ZefyrToolbarAction.confirm : ZefyrToolbarAction.close;
 
-    return ZefyrToolbarScaffold(
-      body: Row(children: items),
-      trailing: toolbar.buildButton(
+
+    Widget trailing = toolbar.buildButton(
         context,
         trailingAction,
         onPressed: trailingPressed,
-      ),
+      );
+    print("-----#####----:" + trailing.toString());
+    return ZefyrToolbarScaffold(
+      body: Row(children: items),
+      trailing: trailing,
     );
   }
 }

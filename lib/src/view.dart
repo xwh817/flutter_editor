@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:quill_delta/quill_delta.dart';
 import 'package:zefyr/zefyr.dart';
 
+import 'full_page.dart';
 import 'images.dart';
 
 class ViewScreen extends StatefulWidget {
@@ -33,7 +34,7 @@ class _ViewScreen extends State<ViewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: true,
-      appBar: AppBar(title: Text('view')),
+      appBar: AppBar(title: ZefyrLogo()),
       body: ListView(
         children: <Widget>[
           SizedBox(height: 16.0),

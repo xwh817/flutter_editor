@@ -73,10 +73,10 @@ class ZefyrThemeData {
   /// The default editor theme.
   factory ZefyrThemeData.fallback(BuildContext context) {
     final defaultStyle = DefaultTextStyle.of(context);
-    final defaultLineTheme = LineTheme(
+    final defaultLineTheme = LineTheme( // 文本样式
       textStyle: defaultStyle.style.copyWith(
-        fontSize: 16.0,
-        height: 1.3,
+        fontSize: 18.0,
+        height: 1.6,
       ),
       padding: EdgeInsets.symmetric(vertical: 8.0),
     );

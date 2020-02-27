@@ -1,43 +1,57 @@
+// Copyright (c) 2018, the Zefyr project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
 import 'package:flutter/material.dart';
-import 'package:markdown_editor/src/form.dart';
-import 'package:markdown_editor/src/view.dart';
 
+import 'src/form.dart';
 import 'src/full_page.dart';
+import 'src/view.dart';
 import 'src/my_editor.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(ZefyrApp());
+}
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class ZefyrApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      debugShowCheckedModeBanner: false,
+      title: 'Zefyr Editor',
       home: HomePage(),
       routes: {
-        "/fullPage": (context) => FullPageEditorScreen(),
-        "/form": (context) => FormEmbeddedScreen(),
-        "/view": (context) => ViewScreen(),
-        "/myEditor": (context) => MyEditorPage(),
+        "/fullPage": buildFullPage,
+        "/form": buildFormPage,
+        "/view": buildViewPage,
+        "/editor_light": (context) => MyEditorPage(false),
+        "/editor_dark": (context) => MyEditorPage(true),
       },
     );
   }
-}
 
+  Widget buildFullPage(BuildContext context) {
+    return FullPageEditorScreen();
+  }
+
+  Widget buildFormPage(BuildContext context) {
+    return FormEmbeddedScreen();
+  }
+
+  Widget buildViewPage(BuildContext context) {
+    return ViewScreen();
+  }
+}
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nav = Navigator.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text('MD Editor')),
+      appBar: AppBar(title: Text('Demo')),
       body: Column(
         children: <Widget>[
           Expanded(child: Container()),
-          RaisedButton(
+          /* RaisedButton(
             onPressed: () => nav.pushNamed('/fullPage'),
             child: Text('Full page editor'),
           ),
@@ -48,14 +62,20 @@ class HomePage extends StatelessWidget {
           RaisedButton(
             onPressed: () => nav.pushNamed('/view'),
             child: Text('Read-only embeddable view'),
+          ), */
+          RaisedButton(
+            onPressed: () => nav.pushNamed('/editor_light'),
+            child: Text('白天模式'),
           ),
           RaisedButton(
-            onPressed: () => nav.pushNamed('/myEditor'),
-            child: Text('MyEditor'),
+            onPressed: () => nav.pushNamed('/editor_dark'),
+            child: Text('夜间模式'),
           ),
           Expanded(child: Container()),
         ],
       ),
     );
   }
+
+  
 }

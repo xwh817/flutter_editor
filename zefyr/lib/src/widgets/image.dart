@@ -51,6 +51,9 @@ class ZefyrImage extends StatefulWidget {
   _ZefyrImageState createState() => _ZefyrImageState();
 }
 
+
+double screenWidth = 0.0;
+
 class _ZefyrImageState extends State<ZefyrImage> {
   String get imageSource {
     EmbedAttribute attribute = widget.node.style.get(NotusAttribute.embed);
@@ -61,6 +64,15 @@ class _ZefyrImageState extends State<ZefyrImage> {
   Widget build(BuildContext context) {
     final theme = ZefyrTheme.of(context);
     final image = widget.delegate.buildImage(context, imageSource);
+    
+    if (screenWidth == 0.0) {
+      MediaQueryData mediaQueryData = MediaQuery.of(context);
+      final size =mediaQueryData.size;
+      screenWidth = size.width * mediaQueryData.devicePixelRatio;
+
+      print("屏幕宽度：${size.width}, 密度：${mediaQueryData.devicePixelRatio}, screenWidth:$screenWidth");
+    }
+    
     return _EditableImage(
       child: Padding(
         padding: theme.defaultLineTheme.padding,
@@ -212,16 +224,25 @@ class RenderEditableImage extends RenderBox
 
   @override
   void performLayout() {
-    assert(constraints.hasBoundedWidth);
+    //assert(constraints.hasBoundedWidth);
     if (child != null) {
       // Make constraints use 16:9 aspect ratio.
-      final width = constraints.maxWidth - kHorizontalPadding * 2;
+      //final width = constraints.maxWidth - kHorizontalPadding * 2;
+      double width;
+      if (screenWidth > 0) {
+        width = screenWidth / 2;
+      } else {
+        width = constraints.maxWidth - kHorizontalPadding * 2;
+      }
       final childConstraints = constraints.copyWith(
         minWidth: 0.0,
         maxWidth: width,
         minHeight: 0.0,
         maxHeight: (width * 9 / 16).floorToDouble(),
       );
+
+      print("###### childConstraints: " + childConstraints.toString());
+
       child.layout(childConstraints, parentUsesSize: true);
       _lastChildSize = child.size;
       size = Size(constraints.maxWidth, _lastChildSize.height);
