@@ -230,10 +230,27 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
 
   List<Widget> _buildChildren(BuildContext context) {
     final result = <Widget>[];
+
+    result.add(_buildTitle());
+
     for (var node in document.root.children) {
       result.add(_defaultChildBuilder(context, node));
     }
     return result;
+  }
+
+  Widget _buildTitle() {
+    return TextField(
+        keyboardType: TextInputType.multiline,
+        maxLines: null, // 通过设置keyboardType自动换行
+        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19.36),
+        decoration: InputDecoration(
+          hintText: '请输入标题',
+          hintStyle:
+              TextStyle(color: Colors.black38, fontWeight: FontWeight.normal),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.fromLTRB(0, 6, 0, 0),
+        ));
   }
 
   Widget _defaultChildBuilder(BuildContext context, Node node) {

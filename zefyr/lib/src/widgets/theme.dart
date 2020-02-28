@@ -76,7 +76,7 @@ class ZefyrThemeData {
     final defaultLineTheme = LineTheme( // 文本样式
       textStyle: defaultStyle.style.copyWith(
         fontSize: 18.0,
-        height: 1.6,
+        height: 1.6,  // 文本行高
       ),
       padding: EdgeInsets.symmetric(vertical: 8.0),
     );

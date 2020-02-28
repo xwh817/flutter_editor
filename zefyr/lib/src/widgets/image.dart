@@ -68,9 +68,10 @@ class _ZefyrImageState extends State<ZefyrImage> {
     if (screenWidth == 0.0) {
       MediaQueryData mediaQueryData = MediaQuery.of(context);
       final size =mediaQueryData.size;
-      screenWidth = size.width * mediaQueryData.devicePixelRatio;
+      //screenWidth = size.width * mediaQueryData.devicePixelRatio;
+      screenWidth = size.width;
 
-      print("屏幕宽度：${size.width}, 密度：${mediaQueryData.devicePixelRatio}, screenWidth:$screenWidth");
+      //print("屏幕宽度：${size.width}, 密度：${mediaQueryData.devicePixelRatio}, screenWidth:$screenWidth");
     }
     
     return _EditableImage(
@@ -238,7 +239,7 @@ class RenderEditableImage extends RenderBox
         minWidth: 0.0,
         maxWidth: width,
         minHeight: 0.0,
-        maxHeight: (width * 9 / 16).floorToDouble(),
+        maxHeight: double.infinity,   // 最大高度不限制
       );
 
       print("###### childConstraints: " + childConstraints.toString());
@@ -246,6 +247,10 @@ class RenderEditableImage extends RenderBox
       child.layout(childConstraints, parentUsesSize: true);
       _lastChildSize = child.size;
       size = Size(constraints.maxWidth, _lastChildSize.height);
+
+
+      print("###### image size: " + size.toString());
+
     } else {
       performResize();
     }

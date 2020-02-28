@@ -61,7 +61,7 @@ class _ZefyrFieldState extends State<ZefyrField> {
       physics: widget.physics,
       keyboardAppearance: widget.keyboardAppearance,
     );
-
+/* 
     if (widget.height != null) {
       child = ConstrainedBox(
         constraints: BoxConstraints.tightFor(height: widget.height),
@@ -81,7 +81,9 @@ class _ZefyrFieldState extends State<ZefyrField> {
         );
       },
       child: child,
-    );
+    ); */
+
+    return child;
   }
 
   InputDecoration _getEffectiveDecoration() {
