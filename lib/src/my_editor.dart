@@ -53,8 +53,18 @@ class _MyEditorPageState extends State<MyEditorPage> {
     super.initState();
   }
 
+  MediaQueryData mediaQueryData;
+
   @override
   Widget build(BuildContext context) {
+
+    if (mediaQueryData == null) {
+      MediaQueryData mediaQueryData = MediaQuery.of(context);
+      final size =mediaQueryData.size;
+      
+      print("屏幕宽度：${size.width}, 密度：${mediaQueryData.devicePixelRatio}");
+    }
+
     final result = Scaffold(
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
@@ -65,7 +75,7 @@ class _MyEditorPageState extends State<MyEditorPage> {
             width: 72,
             child: FlatButton(
               padding: EdgeInsets.symmetric(horizontal: 0),
-              child: Text('草稿箱', style: TextStyle(color: Colors.white60, fontSize: 16.0)),
+              child: Text('草稿箱', style: TextStyle(color: Colors.white60, fontSize: 18.0)),
               onPressed: () {},
             ),
           ),
@@ -84,7 +94,19 @@ class _MyEditorPageState extends State<MyEditorPage> {
         ],
       ),
       body: ZefyrScaffold(
-        child:buildEditor(),
+        child: ZefyrField(
+          height: double.infinity,        
+          /* decoration: InputDecoration(
+              // 官方为解决的bug https://github.com/memspace/zefyr/issues/93
+              hintText: '开始讲述你的故事...', // 去掉默认的hint，不知道为啥就是不能顶部对齐。
+              border: InputBorder.none
+              ), */
+          controller: _controller,
+          focusNode: _focusNode,
+          autofocus: false,
+          imageDelegate: CustomImageDelegate(),
+          physics: ClampingScrollPhysics(),
+        ),
       ),
     );
 
@@ -101,23 +123,26 @@ class _MyEditorPageState extends State<MyEditorPage> {
     return Stack(
       children: <Widget>[
         ZefyrField(
-          height: double.infinity,        
+          height: 200,        
           decoration: InputDecoration(
-              hintText: '', // 去掉默认的hint，不知道为啥就是不能顶部对齐。
-              border: InputBorder.none),
+              // 官方为解决的bug https://github.com/memspace/zefyr/issues/93
+              hintText: '开始讲述你的故事...', // 去掉默认的hint，不知道为啥就是不能顶部对齐。
+              border: InputBorder.none
+              ),
           controller: _controller,
           focusNode: _focusNode,
           autofocus: false,
           imageDelegate: CustomImageDelegate(),
           physics: ClampingScrollPhysics(),
         ),
-        Positioned(
-            top: 57,
+        /* Positioned(
+            top: 60,
             left: 16,
             child: IgnorePointer(
                 // 使用IgnorePointer不响应事件，防止挡住后面。
                 child: Text(this.showHint ? '开始讲述你的故事...' : '',
-                    style: TextStyle(color: Colors.black38, fontSize: 18)))),
+                    style: TextStyle(color: Colors.black38, fontSize: 17)))),
+       */
       ],
     );
   }

@@ -103,6 +103,8 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
   FocusNode _focusNode;
   FocusAttachment _focusAttachment;
 
+  bool isEmpty = true;  // 内容是否为空
+
   /// Express interest in interacting with the keyboard.
   ///
   /// If this control is already attached to the keyboard, this function will
@@ -236,21 +238,47 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
     for (var node in document.root.children) {
       result.add(_defaultChildBuilder(context, node));
     }
+
+    if (result.length > 1) {
+      Widget hintTarget = result[1];
+      result[1] = _addHintText(hintTarget);
+    }
+
     return result;
   }
 
   Widget _buildTitle() {
     return TextField(
+        autofocus: true,
         keyboardType: TextInputType.multiline,
         maxLines: null, // 通过设置keyboardType自动换行
-        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19.36),
+        style: TextStyle(
+            fontWeight: FontWeight.w600, fontSize: 19.36, height: 1.25),
         decoration: InputDecoration(
           hintText: '请输入标题',
           hintStyle:
               TextStyle(color: Colors.black38, fontWeight: FontWeight.normal),
           border: InputBorder.none,
-          contentPadding: EdgeInsets.fromLTRB(0, 6, 0, 0),
+          contentPadding: EdgeInsets.fromLTRB(0, 16, 0, 8), // 标题的padding
         ));
+  }
+
+
+  Widget _addHintText(Widget target) {
+    if (this.isEmpty) {
+      return Stack(
+      children: <Widget>[
+        target,
+        Padding(
+            padding: EdgeInsets.only(top:11),
+            child: Text('开始讲述你的故事...',
+                style: TextStyle(color: Colors.black38, fontSize: 18.0)))
+      ],
+    );
+    } else {
+      return target;
+    }
+    
   }
 
   Widget _defaultChildBuilder(BuildContext context, Node node) {
@@ -314,8 +342,12 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
     }
     _input.updateRemoteValue(widget.controller.plainTextEditingValue);
     _cursorTimer.startOrStop(_focusNode, selection);
+
+
+    bool isEmpty = widget.controller.document.length <= 1;
+      //print("isEmpty: ${isEmpty}, text内容：" + widget.controller.plainTextEditingValue.text);
     setState(() {
-      // nothing to update internally.
+      this.isEmpty = isEmpty;
     });
   }
 

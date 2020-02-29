@@ -85,7 +85,7 @@ class _ZefyrFieldState extends State<ZefyrField> {
 
     return child;
   }
-
+/* 
   InputDecoration _getEffectiveDecoration() {
     final InputDecoration effectiveDecoration =
         (widget.decoration ?? const InputDecoration())
@@ -95,5 +95,5 @@ class _ZefyrFieldState extends State<ZefyrField> {
             );
 
     return effectiveDecoration;
-  }
+  } */
 }

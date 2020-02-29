@@ -1,6 +1,8 @@
 // Copyright (c) 2018, the Zefyr project authors.  Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'src/form.dart';
@@ -8,11 +10,25 @@ import 'src/full_page.dart';
 import 'src/view.dart';
 import 'src/my_editor.dart';
 
+import 'localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 void main() {
   runApp(ZefyrApp());
 }
 
+  List<Locale> an = [
+    const Locale('zh', 'CH'),
+    const Locale('en', 'US'),
+  ];
+  List<Locale> ios = [
+    const Locale('en', 'US'),
+    const Locale('zh', 'CH'),
+  ];
+
+
 class ZefyrApp extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,6 +42,12 @@ class ZefyrApp extends StatelessWidget {
         "/editor_light": (context) => MyEditorPage(false),
         "/editor_dark": (context) => MyEditorPage(true),
       },
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        ChineseCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: Platform.isIOS ? ios : an,
     );
   }
 
@@ -51,7 +73,7 @@ class HomePage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Expanded(child: Container()),
-          /* RaisedButton(
+          RaisedButton(
             onPressed: () => nav.pushNamed('/fullPage'),
             child: Text('Full page editor'),
           ),
@@ -62,7 +84,7 @@ class HomePage extends StatelessWidget {
           RaisedButton(
             onPressed: () => nav.pushNamed('/view'),
             child: Text('Read-only embeddable view'),
-          ), */
+          ),
           RaisedButton(
             onPressed: () => nav.pushNamed('/editor_light'),
             child: Text('白天模式'),
