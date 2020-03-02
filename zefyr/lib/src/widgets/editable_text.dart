@@ -253,7 +253,7 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
         keyboardType: TextInputType.multiline,
         maxLines: null, // 通过设置keyboardType自动换行
         style: TextStyle(
-            fontWeight: FontWeight.w600, fontSize: 19.36, height: 1.25),
+            fontWeight: FontWeight.w600, fontSize: 20, height: 1.25),
         decoration: InputDecoration(
           hintText: '请输入标题',
           hintStyle:
@@ -270,7 +270,7 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
       children: <Widget>[
         target,
         Padding(
-            padding: EdgeInsets.only(top:11),
+            padding: EdgeInsets.only(top:8),
             child: Text('开始讲述你的故事...',
                 style: TextStyle(color: Colors.black38, fontSize: 18.0)))
       ],

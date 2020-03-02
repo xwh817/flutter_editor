@@ -75,7 +75,7 @@ class ZefyrThemeData {
     final defaultStyle = DefaultTextStyle.of(context);
     final defaultLineTheme = LineTheme( // 文本样式
       textStyle: defaultStyle.style.copyWith(
-        fontSize: 18.0,
+        fontSize: 8.0 * MediaQuery.of(context).devicePixelRatio + (2.75 - MediaQuery.of(context).devicePixelRatio)*2.0,
         height: 1.6,  // 文本行高
       ),
       padding: EdgeInsets.symmetric(vertical: 8.0),

@@ -1,7 +1,6 @@
 // Copyright (c) 2018, the Zefyr project authors.  Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
-import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -267,7 +266,11 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
       //buildButton(context, ZefyrToolbarAction.numberList),
       buildButton(context, ZefyrToolbarAction.quote),
       //buildButton(context, ZefyrToolbarAction.code),
-      buildButton(context, ZefyrToolbarAction.horizontalRule),
+      buildButton(context, ZefyrToolbarAction.horizontalRule, onPressed: (){
+        print("add horizontalRule");
+        editor.formatSelection(NotusAttribute.embed.horizontalRule);
+        addNextLine();
+      }),
 
       //if (editor.imageDelegate != null) ImageButton(),
 
@@ -277,10 +280,6 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
       IconButton(
           icon: Icon(Icons.image, color: Colors.white),
           onPressed: () => {
-                //print('test');
-                //pickFromGallery()
-
-                //selectImageMethod()
                 showImageDialog()
               }),
 
@@ -320,7 +319,7 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
     return FlatButton(
         child: Row(
           children: <Widget>[
-            Icon(icon),
+            Icon(icon, size: 24, color: Colors.black54),
             SizedBox(height: 50, width: 12),
             Text(title)
           ],
@@ -336,6 +335,7 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
       NotusAttribute value = NotusAttribute.embed.image(image);
       print(value);
       editor.formatSelection(value);
+      addNextLine();
     }
   }
 
@@ -343,11 +343,22 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
     final image =
         await editor.imageDelegate.pickImage(editor.imageDelegate.cameraSource);
     if (image != null) {
+      print(image);
       editor.formatSelection(NotusAttribute.embed.image(image));
+      addNextLine();
     }
   }
-}
 
+  /// 自动换一行
+  /// 阅读源码，总算找到地方了。
+  void addNextLine() {
+    // 更新cursor位置
+    final cursorPosition = editor.selection.extentOffset;
+    editor.controller.document.insert(cursorPosition, "\n");
+    editor.updateSelection(editor.selection.copyWith(
+        extentOffset: cursorPosition + 1, baseOffset: cursorPosition + 1));
+  }
+}
 
 /// Scrollable list of toolbar buttons.
 class ZefyrButtonList extends StatefulWidget {
@@ -432,7 +443,7 @@ class _DefaultZefyrToolbarDelegate implements ZefyrToolbarDelegate {
     ZefyrToolbarAction.code: Icons.code,
     ZefyrToolbarAction.quote: Icons.format_quote,
     ZefyrToolbarAction.horizontalRule: Icons.more_horiz,
-    ZefyrToolbarAction.image: Icons.photo,
+    ZefyrToolbarAction.image: Icons.add_photo_alternate,
     ZefyrToolbarAction.cameraImage: Icons.photo_camera,
     ZefyrToolbarAction.galleryImage: Icons.photo_library,
     ZefyrToolbarAction.hideKeyboard: Icons.keyboard_arrow_down,
