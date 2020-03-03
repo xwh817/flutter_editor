@@ -27,6 +27,7 @@ enum ZefyrToolbarAction {
   code,
   quote,
   horizontalRule,
+  addImage,
   image,
   cameraImage,
   galleryImage,
@@ -266,22 +267,21 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
       //buildButton(context, ZefyrToolbarAction.numberList),
       buildButton(context, ZefyrToolbarAction.quote),
       //buildButton(context, ZefyrToolbarAction.code),
-      buildButton(context, ZefyrToolbarAction.horizontalRule, onPressed: (){
+      buildButton(context, ZefyrToolbarAction.horizontalRule, onPressed: () {
         print("add horizontalRule");
         editor.formatSelection(NotusAttribute.embed.horizontalRule);
         addNextLine();
       }),
 
-      //if (editor.imageDelegate != null) ImageButton(),
+      buildButton(context, ZefyrToolbarAction.addImage, onPressed: () {
+        showImageDialog();
+      }),
 
-      //ImageButton(),
-      //buildImagePopMenu(),
-
-      IconButton(
-          icon: Icon(Icons.image, color: Colors.white),
+      /* IconButton(
+          icon: ImageIcon(AssetImage("images/image_add.png"), color:Colors.white),
           onPressed: () => {
                 showImageDialog()
-              }),
+              }), */
 
       SizedBox(width: 8), // 间隔
     ];
@@ -451,6 +451,13 @@ class _DefaultZefyrToolbarDelegate implements ZefyrToolbarDelegate {
     ZefyrToolbarAction.confirm: Icons.check,
   };
 
+  // 本地Icons
+  static const localButtonIcons = {
+    ZefyrToolbarAction.addImage: "images/weather_test.png",
+  };
+
+  // 图标大小
+  static const myIconSize = 20.0;
   static const kSpecialIconSizes = {
     ZefyrToolbarAction.unlink: 20.0,
     ZefyrToolbarAction.clipboardCopy: 20.0,
@@ -477,6 +484,13 @@ class _DefaultZefyrToolbarDelegate implements ZefyrToolbarDelegate {
         action: action,
         icon: icon,
         iconSize: size,
+        onPressed: onPressed,
+      );
+    } else if (localButtonIcons.containsKey(action)) {
+      return ZefyrButton.myIcon(
+        action: action,
+        path: localButtonIcons[action],
+        iconSize: myIconSize,
         onPressed: onPressed,
       );
     } else {

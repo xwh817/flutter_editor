@@ -26,6 +26,21 @@ class ZefyrButton extends StatelessWidget {
   })  : assert(action != null),
         assert(icon != null),
         _icon = icon,
+        _path = null,
+        _iconSize = iconSize,
+        _text = null,
+        _textStyle = null,
+        super();
+
+  ZefyrButton.myIcon({
+    @required this.action,
+    @required String path,
+    double iconSize,
+    this.onPressed,
+  })  : assert(action != null),
+        assert(path != null),
+        _icon = null,
+        _path = path,
         _iconSize = iconSize,
         _text = null,
         _textStyle = null,
@@ -43,6 +58,7 @@ class ZefyrButton extends StatelessWidget {
   })  : assert(action != null),
         assert(text != null),
         _icon = null,
+        _path = null,
         _iconSize = null,
         _text = text,
         _textStyle = style,
@@ -51,6 +67,7 @@ class ZefyrButton extends StatelessWidget {
   /// Toolbar action associated with this button.
   final ZefyrToolbarAction action;
   final IconData _icon;
+  final String _path;
   final double _iconSize;
   final String _text;
   final TextStyle _textStyle;
@@ -71,7 +88,16 @@ class ZefyrButton extends StatelessWidget {
     final iconColor = (pressedHandler == null)
         ? toolbarTheme.disabledIconColor
         : toolbarTheme.iconColor;
-    if (_icon != null) {
+    if (_path != null) {
+      return RawZefyrButton.myIcon(
+        action: action,
+        path: _path,
+        size: _iconSize,
+        iconColor: iconColor,
+        color: _getColor(editor, toolbarTheme),
+        onPressed: _getPressedHandler(editor, toolbar),
+      );
+    } else if (_icon != null) {
       return RawZefyrButton.icon(
         action: action,
         icon: _icon,
@@ -156,6 +182,17 @@ class RawZefyrButton extends StatelessWidget {
     @required this.color,
     @required this.onPressed,
   })  : child = Icon(icon, size: size, color: iconColor),
+        super();
+
+// 自定义图标
+  RawZefyrButton.myIcon({
+    @required this.action,
+    @required String path,
+    double size,
+    Color iconColor,
+    @required this.color,
+    @required this.onPressed,
+  })  : child = ImageIcon(AssetImage(path), size: size, color: iconColor),
         super();
 
   /// Toolbar action associated with this button.
@@ -465,12 +502,11 @@ class _LinkButtonState extends State<LinkButton> {
     final trailingAction =
         isEditing ? ZefyrToolbarAction.confirm : ZefyrToolbarAction.close;
 
-
     Widget trailing = toolbar.buildButton(
-        context,
-        trailingAction,
-        onPressed: trailingPressed,
-      );
+      context,
+      trailingAction,
+      onPressed: trailingPressed,
+    );
     print("-----#####----:" + trailing.toString());
     return ZefyrToolbarScaffold(
       body: Row(children: items),

@@ -17,18 +17,16 @@ void main() {
   runApp(ZefyrApp());
 }
 
-  List<Locale> an = [
-    const Locale('zh', 'CH'),
-    const Locale('en', 'US'),
-  ];
-  List<Locale> ios = [
-    const Locale('en', 'US'),
-    const Locale('zh', 'CH'),
-  ];
-
+List<Locale> an = [
+  const Locale('zh', 'CH'),
+  const Locale('en', 'US'),
+];
+List<Locale> ios = [
+  const Locale('en', 'US'),
+  const Locale('zh', 'CH'),
+];
 
 class ZefyrApp extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -93,11 +91,12 @@ class HomePage extends StatelessWidget {
             onPressed: () => nav.pushNamed('/editor_dark'),
             child: Text('夜间模式'),
           ),
+          IconButton(
+              icon: ImageIcon(AssetImage("images/weather_test.png")),
+              onPressed: () => {print("Icon")}),
           Expanded(child: Container()),
         ],
       ),
     );
   }
-
-  
 }
