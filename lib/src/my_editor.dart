@@ -38,9 +38,10 @@ class _MyEditorPageState extends State<MyEditorPage> {
         plainText = _controller.document.toPlainText();
          */
       //String string = _controller.document.toString();
-      //setState(() {
+      // 注意加上这行，文本变化的时候，可能会刷新下面的按钮。
+      setState(() {
 
-      //});
+      });
     });
     super.initState();
   }

@@ -71,7 +71,7 @@ class HomePage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Expanded(child: Container()),
-          RaisedButton(
+          /* RaisedButton(
             onPressed: () => nav.pushNamed('/fullPage'),
             child: Text('Full page editor'),
           ),
@@ -82,7 +82,7 @@ class HomePage extends StatelessWidget {
           RaisedButton(
             onPressed: () => nav.pushNamed('/view'),
             child: Text('Read-only embeddable view'),
-          ),
+          ), */
           RaisedButton(
             onPressed: () => nav.pushNamed('/editor_light'),
             child: Text('白天模式'),
@@ -91,9 +91,6 @@ class HomePage extends StatelessWidget {
             onPressed: () => nav.pushNamed('/editor_dark'),
             child: Text('夜间模式'),
           ),
-          IconButton(
-              icon: ImageIcon(AssetImage("images/image_add.png")),
-              onPressed: () => {print("Icon")}),
           Expanded(child: Container()),
         ],
       ),

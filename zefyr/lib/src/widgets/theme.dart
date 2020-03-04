@@ -508,7 +508,7 @@ class ToolbarTheme {
           ? Color(0xFFF3F7F8)
           : Colors.grey.shade800,
       toggleColor: theme.primaryColorBrightness == Brightness.light
-          ? Colors.grey.shade400
+          ? Color(0x16000000)
           : Colors.grey.shade900,
       iconColor: theme.primaryIconTheme.color,
       disabledIconColor: theme.disabledColor,
