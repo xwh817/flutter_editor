@@ -344,7 +344,7 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
     _cursorTimer.startOrStop(_focusNode, selection);
 
 
-    bool isEmpty = widget.controller.document.length <= 1;
+    bool isEmpty = widget.controller.document.toString().length <= 4;
       //print("isEmpty: ${isEmpty}, text内容：" + widget.controller.plainTextEditingValue.text);
     setState(() {
       this.isEmpty = isEmpty;

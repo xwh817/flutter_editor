@@ -28,6 +28,7 @@ enum ZefyrToolbarAction {
   quote,
   horizontalRule,
   addImage,
+  divider,
   image,
   cameraImage,
   galleryImage,
@@ -267,8 +268,13 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
       //buildButton(context, ZefyrToolbarAction.numberList),
       buildButton(context, ZefyrToolbarAction.quote),
       //buildButton(context, ZefyrToolbarAction.code),
-      buildButton(context, ZefyrToolbarAction.horizontalRule, onPressed: () {
+      /* buildButton(context, ZefyrToolbarAction.horizontalRule, onPressed: () {
         print("add horizontalRule");
+        editor.formatSelection(NotusAttribute.embed.horizontalRule);
+        addNextLine();
+      }), */
+
+      buildButton(context, ZefyrToolbarAction.divider, onPressed: () {
         editor.formatSelection(NotusAttribute.embed.horizontalRule);
         addNextLine();
       }),
@@ -354,9 +360,13 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
   void addNextLine() {
     // 更新cursor位置
     final cursorPosition = editor.selection.extentOffset;
-    editor.controller.document.insert(cursorPosition, "\n");
-    editor.updateSelection(editor.selection.copyWith(
-        extentOffset: cursorPosition + 1, baseOffset: cursorPosition + 1));
+    //print('光标位置：$cursorPosition , 文本长度：${editor.controller.document.length}');
+    // 只有在最后位置才自动换行。中间的不用
+    if (cursorPosition == editor.controller.document.length - 1) {
+      editor.controller.document.insert(cursorPosition, "\n");
+      editor.updateSelection(editor.selection.copyWith(
+          extentOffset: cursorPosition + 1, baseOffset: cursorPosition + 1));
+    }
   }
 }
 
@@ -453,7 +463,8 @@ class _DefaultZefyrToolbarDelegate implements ZefyrToolbarDelegate {
 
   // 本地Icons
   static const localButtonIcons = {
-    ZefyrToolbarAction.addImage: "images/weather_test.png",
+    ZefyrToolbarAction.addImage: "images/image_add.png",
+    ZefyrToolbarAction.divider: "images/divider.png",
   };
 
   // 图标大小

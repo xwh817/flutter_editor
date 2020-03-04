@@ -505,7 +505,7 @@ class ToolbarTheme {
     final theme = Theme.of(context);
     return ToolbarTheme._(
       color: theme.primaryColorBrightness == Brightness.light
-          ? Colors.grey.shade300
+          ? Color(0xFFF3F7F8)
           : Colors.grey.shade800,
       toggleColor: theme.primaryColorBrightness == Brightness.light
           ? Colors.grey.shade400

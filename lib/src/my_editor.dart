@@ -32,15 +32,15 @@ class _MyEditorPageState extends State<MyEditorPage> {
     print('initState');
 
     _controller.document.changes.listen((change) {
-      setState(() {
-        //获取数据的方式有一些
-        /* _delta = _zefyrController.document.toDelta();
-        json = _zefyrController.document.toJson();
-        string = _zefyrController.document.toString();
-        plainText = _zefyrController.document.toPlainText();
+      //获取数据的方式有一些
+      /* _delta = _controller.document.toDelta();
+        json = _controller.document.toJson();
+        plainText = _controller.document.toPlainText();
          */
-        //print(string.length);
-      });
+      //String string = _controller.document.toString();
+      //setState(() {
+
+      //});
     });
     super.initState();
   }
@@ -49,24 +49,22 @@ class _MyEditorPageState extends State<MyEditorPage> {
 
   @override
   Widget build(BuildContext context) {
-
     if (mediaQueryData == null) {
       mediaQueryData = MediaQuery.of(context);
-      final size =mediaQueryData.size;
+      final size = mediaQueryData.size;
       print("屏幕宽度：${size.width}, 密度：${mediaQueryData.devicePixelRatio}");
     }
 
     final result = Scaffold(
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
-        //leading: Icon(Icons.arrow_back_ios, size: 18),
-        elevation: 0,
+        elevation: 0.5,
         actions: [
           Container(
             width: 72,
             child: FlatButton(
               padding: EdgeInsets.symmetric(horizontal: 0),
-              child: Text('草稿箱', style: TextStyle(color: Colors.white60, fontSize: 16.0)),
+              child: Text('草稿箱', style: TextStyle(fontSize: 16.0)),
               onPressed: () {},
             ),
           ),
@@ -75,7 +73,7 @@ class _MyEditorPageState extends State<MyEditorPage> {
             margin: EdgeInsets.only(right: 6),
             child: FlatButton(
               padding: EdgeInsets.symmetric(horizontal: 0),
-              child: Text('发表', style: TextStyle(color: Colors.white, fontSize: 16.0)),
+              child: Text('发表', style: TextStyle(fontSize: 16.0)),
               onPressed: () {
                 String text = _controller.document.toJson().toString();
                 print("发表：$text");
@@ -86,7 +84,7 @@ class _MyEditorPageState extends State<MyEditorPage> {
       ),
       body: ZefyrScaffold(
         child: ZefyrField(
-          height: double.infinity,        
+          height: double.infinity,
           /* decoration: InputDecoration(
               // 官方为解决的bug https://github.com/memspace/zefyr/issues/93
               hintText: '开始讲述你的故事...', // 去掉默认的hint，不知道为啥就是不能顶部对齐。
@@ -102,12 +100,24 @@ class _MyEditorPageState extends State<MyEditorPage> {
     );
 
     if (widget.darkTheme) {
-      return Theme(data: ThemeData.dark(), child: result);
+      return Theme(
+          data: ThemeData(
+              brightness: Brightness.dark,
+              primaryColorBrightness: Brightness.dark,
+              appBarTheme: AppBarTheme(
+                color: Colors.black12,
+              )),
+          child: result);
     } else {
-      return Theme(data: ThemeData(primarySwatch: Colors.blue), child: result);
+      return Theme(
+          data: ThemeData(
+              brightness: Brightness.light,
+              primaryColorBrightness: Brightness.light,
+              appBarTheme: AppBarTheme(
+                  color: Colors.white,
+                  iconTheme:
+                      IconThemeData(color: Colors.black.withOpacity(0.6)))),
+          child: result);
     }
-
   }
-
-  
 }
