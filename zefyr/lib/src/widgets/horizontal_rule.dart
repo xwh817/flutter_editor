@@ -94,9 +94,10 @@ class RenderHorizontalRule extends RenderEditableBox {
   TextPosition getPositionForOffset(Offset offset) {
     int position = _node.documentOffset;
 
-    if (offset.dx > size.width / 2) {
+    /* if (offset.dx > size.width / 2) {
       position++;
-    }
+    } */
+    position++; // 单行的控件，只允许选择右边
     return TextPosition(offset: position);
   }
 

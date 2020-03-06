@@ -249,18 +249,21 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
   }
 
   Widget _buildTitle() {
+    Color textColor = Color(ZefyrTheme.isThemeDark(context) ? 0x99FFFFFF : 0xDE000000);
+    Color hintTextColor = Color(ZefyrTheme.isThemeDark(context) ? 0x66FFFFFF : 0x99000000);
     return TextField(
         autofocus: true,
         keyboardType: TextInputType.multiline,
         maxLines: null, // 通过设置keyboardType自动换行
         style: TextStyle(
+            color: textColor,
             fontWeight: FontWeight.w600,
             fontSize: ScreenUtil().setSp(20),
             height: 1.25),
         decoration: InputDecoration(
           hintText: '请输入标题',
           hintStyle:
-              TextStyle(color: Colors.black38, fontWeight: FontWeight.normal),
+              TextStyle(color: hintTextColor, fontWeight: FontWeight.normal),
           border: InputBorder.none,
           contentPadding: EdgeInsets.fromLTRB(0, 16, 0, 8), // 标题的padding
         ));
@@ -268,6 +271,7 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
 
   // 控件的hintText居然在底部，只能自己模拟实现了
   Widget _addHintText(Widget target) {
+    Color hintTextColor = Color(ZefyrTheme.isThemeDark(context) ? 0x66FFFFFF : 0x99000000);
     if (this.isEmpty) {
       return Stack(
         children: <Widget>[
@@ -278,7 +282,7 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
                       MediaQuery.of(context).devicePixelRatio * 1.5),
               child: Text('开始讲述你的故事...',
                   style: TextStyle(
-                      color: Colors.black38, fontSize: ScreenUtil().setSp(18))))
+                      color: hintTextColor, fontSize: ScreenUtil().setSp(18))))
         ],
       );
     } else {
@@ -349,7 +353,7 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
     _cursorTimer.startOrStop(_focusNode, selection);
 
     bool isEmpty = widget.controller.document.toString().length <= 4;
-    //print("isEmpty: ${isEmpty}, text内容：" + widget.controller.plainTextEditingValue.text);
+    //print("isEmpty: ${isEmpty}, text内容：" + widget.controller.document.toString());
     setState(() {
       this.isEmpty = isEmpty;
     });

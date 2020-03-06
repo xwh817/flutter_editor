@@ -157,10 +157,10 @@ class RenderEditableImage extends RenderBox
   @override
   TextPosition getPositionForOffset(Offset offset) {
     int position = node.documentOffset;
-
-    if (offset.dx > size.width / 2) {
+    /* if (offset.dx > size.width / 2) {
       position++;
-    }
+    } */
+    position++; // 单行的控件，只允许选择右边
     return TextPosition(offset: position);
   }
 

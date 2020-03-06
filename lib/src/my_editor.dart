@@ -38,6 +38,7 @@ class _MyEditorPageState extends State<MyEditorPage> {
         plainText = _controller.document.toPlainText();
          */
       //String string = _controller.document.toString();
+
       // 注意加上这行，文本变化的时候，可能会刷新下面的按钮。
       setState(() {});
     });
@@ -59,44 +60,50 @@ class _MyEditorPageState extends State<MyEditorPage> {
       ScreenUtil.init(context, width: 360, height: 640);
     }
 
+    TextStyle buttonStyle = TextStyle(
+        color: Color(widget.darkTheme ? 0x99FFFFFF : 0xDE000000),
+        fontSize: ScreenUtil().setSp(16));
+
     final result = Scaffold(
       resizeToAvoidBottomPadding: true,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(ScreenUtil().setHeight(40)),
-        child:AppBar(
-        elevation: 0.5,
-        actions: [
-          Container(
-            width: ScreenUtil().setWidth(90),
-            child: FlatButton(
-              padding: EdgeInsets.symmetric(horizontal: 0),
-              child: Text('草稿箱',
-                  style: TextStyle(fontSize: ScreenUtil().setSp(16))),
-              onPressed: () {},
-            ),
-          ),
-          Container(
-            width: ScreenUtil().setWidth(60),
-            margin: EdgeInsets.only(right: 6),
-            child: FlatButton(
-              padding: EdgeInsets.symmetric(horizontal: 0),
-              child: Text('发表', style: TextStyle(fontSize: ScreenUtil().setSp(16))),
-              onPressed: () {
-                String text = _controller.document.toJson().toString();
-                print("发表：$text");
-              },
-            ),
-          ),
-        ],
-      )),
+          preferredSize: Size.fromHeight(ScreenUtil().setHeight(40)),
+          child: AppBar(
+            elevation: 0.5,
+            actions: [
+              Container(
+                width: ScreenUtil().setWidth(90),
+                child: FlatButton(
+                  padding: EdgeInsets.symmetric(horizontal: 0),
+                  child: Text('草稿箱', style: buttonStyle),
+                  onPressed: () {},
+                ),
+              ),
+              Container(
+                width: ScreenUtil().setWidth(60),
+                margin: EdgeInsets.only(right: 6),
+                child: FlatButton(
+                  padding: EdgeInsets.symmetric(horizontal: 0),
+                  child: Text('发表', style: buttonStyle),
+                  onPressed: () {
+                    //String text = _controller.document.toJson().toString();
+                    print("发表：${_controller.document.length}");
+                    if (_controller.document.length <= 1) {
+                      _showInfoDialog();
+                    }
+                  },
+                ),
+              ),
+            ],
+          )),
       body: ZefyrScaffold(
         child: ZefyrField(
           height: double.infinity,
           /* decoration: InputDecoration(
-              // 官方为解决的bug https://github.com/memspace/zefyr/issues/93
-              hintText: '开始讲述你的故事...', // 去掉默认的hint，不知道为啥就是不能顶部对齐。
-              border: InputBorder.none
-              ), */
+                                    // 官方为解决的bug https://github.com/memspace/zefyr/issues/93
+                                    hintText: '开始讲述你的故事...', // 去掉默认的hint，不知道为啥就是不能顶部对齐。
+                                    border: InputBorder.none
+                                    ), */
           controller: _controller,
           focusNode: _focusNode,
           autofocus: false,
@@ -112,8 +119,9 @@ class _MyEditorPageState extends State<MyEditorPage> {
               brightness: Brightness.dark,
               primaryColorBrightness: Brightness.dark,
               appBarTheme: AppBarTheme(
-                color: Colors.black12,
-              )),
+                  color: Color(0xFF282828),
+                  iconTheme: IconThemeData(color: Color(0x99FFFFFF)),
+                  textTheme: TextTheme(button: TextStyle(color: Colors.red)))),
           child: result);
     } else {
       return Theme(
@@ -126,5 +134,32 @@ class _MyEditorPageState extends State<MyEditorPage> {
                       IconThemeData(color: Colors.black.withOpacity(0.6)))),
           child: result);
     }
+  }
+
+  void _showInfoDialog() {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (_) => AlertDialog(
+          contentPadding: EdgeInsets.fromLTRB(24, 24, 16, 16),
+              backgroundColor:
+                  widget.darkTheme ? Color(0x66ffffff) : Colors.white,
+              content: Text('您需要先写点东西，然后才能发表哦',
+                  style: TextStyle(fontSize: ScreenUtil().setSp(17), height: 1.5)),
+              actions: <Widget>[
+                new FlatButton(
+                  child: new Text("我知道了",
+                      style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: ScreenUtil().setSp(16))),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                SizedBox(width: 2)
+              ],
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30))),
+            ));
   }
 }

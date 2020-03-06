@@ -9,6 +9,10 @@ import 'package:flutter/material.dart';
 class ZefyrTheme extends InheritedWidget {
   final ZefyrThemeData data;
 
+  static bool isThemeDark(BuildContext context) {
+    return Theme.of(context).primaryColorBrightness == Brightness.dark;
+  }
+
   /// Applies the given theme [data] to [child].
   ///
   /// The [data] and [child] arguments must not be null.
@@ -86,6 +90,7 @@ class ZefyrThemeData {
       textStyle: defaultStyle.style.copyWith(
         //fontSize: 8.0 * MediaQuery.of(context).devicePixelRatio + (2.75 - MediaQuery.of(context).devicePixelRatio)*2.0,
         fontSize: _getFontSize(context),
+        color: Color(ZefyrTheme.isThemeDark(context) ? 0x99FFFFFF : 0xDE000000),
         height: 1.6,  // 文本行高
       ),
       padding: EdgeInsets.symmetric(vertical: 8.0),
@@ -516,7 +521,7 @@ class ToolbarTheme {
     return ToolbarTheme._(
       color: theme.primaryColorBrightness == Brightness.light
           ? Color(0xFFF3F7F8)
-          : Colors.grey.shade800,
+          : Color(0xFF2F2F2F),
       toggleColor: theme.primaryColorBrightness == Brightness.light
           ? Color(0x16000000)
           : Colors.grey.shade900,
