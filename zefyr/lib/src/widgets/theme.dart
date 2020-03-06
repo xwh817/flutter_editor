@@ -503,13 +503,13 @@ class AttributeTheme {
 
 /// Defines styles and colors for Zefyr editor toolbar.
 class ToolbarTheme {
-  /// The background color of the toolbar.
+  /// 底部工具栏背景色The background color of the toolbar.
   final Color color;
 
   /// Color of buttons in toggled state.
   final Color toggleColor;
 
-  /// Color of button icons.
+  /// 按钮颜色Color of button icons.
   final Color iconColor;
 
   /// Color of button icons in disabled state.
@@ -525,7 +525,9 @@ class ToolbarTheme {
       toggleColor: theme.primaryColorBrightness == Brightness.light
           ? Color(0x16000000)
           : Colors.grey.shade900,
-      iconColor: theme.primaryIconTheme.color,
+      iconColor: theme.primaryColorBrightness == Brightness.light
+          ? Color(0xFF747474)
+          : Color(0x8AFFFFFF),
       disabledIconColor: theme.disabledColor,
     );
   }

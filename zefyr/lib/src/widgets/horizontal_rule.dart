@@ -7,34 +7,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:notus/notus.dart';
+import 'package:zefyr/zefyr.dart';
 
 import 'editable_box.dart';
 
 class ZefyrHorizontalRule extends LeafRenderObjectWidget {
-  ZefyrHorizontalRule({@required this.node}) : assert(node != null);
+  ZefyrHorizontalRule(this.isDarkTheme, {@required this.node})
+      : assert(node != null);
 
   final EmbedNode node;
+  final bool isDarkTheme;
 
   @override
   RenderHorizontalRule createRenderObject(BuildContext context) {
-    return RenderHorizontalRule(node: node);
+    return RenderHorizontalRule(isDarkTheme: isDarkTheme, node: node);
   }
 
   @override
   void updateRenderObject(
       BuildContext context, RenderHorizontalRule renderObject) {
-    renderObject..node = node;
+    renderObject.node = node;
+    renderObject.isDarkTheme = isDarkTheme;
   }
 }
 
 class RenderHorizontalRule extends RenderEditableBox {
-  static const _kPaddingBottom = 60.0;  // 底部间距
+  static const _kPaddingBottom = 60.0; // 底部间距
   static const _kThickness = 1.0; // 线条厚度
   static const _kHeight = _kThickness + _kPaddingBottom;
 
-  RenderHorizontalRule({
-    @required EmbedNode node,
-  }) : _node = node;
+  RenderHorizontalRule({@required bool isDarkTheme, @required EmbedNode node})
+      : _node = node,
+        _isDarkTheme = isDarkTheme;
 
   @override
   EmbedNode get node => _node;
@@ -43,6 +47,11 @@ class RenderHorizontalRule extends RenderEditableBox {
     if (_node == value) return;
     _node = value;
     markNeedsPaint();
+  }
+
+  bool _isDarkTheme;
+  set isDarkTheme(bool isDark) {
+    _isDarkTheme = isDark;
   }
 
   @override
@@ -80,14 +89,17 @@ class RenderHorizontalRule extends RenderEditableBox {
     //final rect = Rect.fromLTWH(padding, 20.0, size.width - padding*2, _kThickness);
     //final paint = ui.Paint()..color = Colors.grey.shade200;
     //context.canvas.drawRect(rect.shift(offset), paint);
-    final paint = ui.Paint()..color = Colors.black45;
+    final paint = ui.Paint()
+      ..color = _isDarkTheme ? Color(0x99FFFFFF) : Colors.black45;
     double center = size.width / 2;
     double itemSize = 1.5;
     double itemPadding = 20.0;
-    double dy = _kPaddingBottom/2;
-    context.canvas.drawCircle(Offset(center - itemPadding, dy), itemSize, paint);
+    double dy = _kPaddingBottom / 2;
+    context.canvas
+        .drawCircle(Offset(center - itemPadding, dy), itemSize, paint);
     context.canvas.drawCircle(Offset(center, dy), itemSize, paint);
-    context.canvas.drawCircle(Offset(center + itemPadding, dy), itemSize, paint);
+    context.canvas
+        .drawCircle(Offset(center + itemPadding, dy), itemSize, paint);
   }
 
   @override

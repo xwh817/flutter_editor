@@ -225,9 +225,12 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
     super.dispose();
   }
 
+  bool _isDarkTheme;
+
   @override
   Widget build(BuildContext context) {
     final layers = <Widget>[];
+    _isDarkTheme = ZefyrTheme.isThemeDark(context);
 
     // Must set unique key for the toolbar to prevent it from reconstructing
     // new state each time we toggle overlay.
@@ -305,7 +308,7 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
                 topRight: Radius.circular(16.0)),
             child: Container(
                 height: 200,
-                color: Colors.white.withOpacity(0.9),
+                color: _isDarkTheme ? Color(0xFF2F2F2F) : Colors.white,
                 padding: EdgeInsets.symmetric(vertical: 24),
                 child: Column(children: <Widget>[
                   getMenuItem(Icons.photo_camera, '拍照', () {
@@ -323,12 +326,13 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
   }
 
   Widget getMenuItem(IconData icon, String title, Function onPressed) {
+    Color color = Color(_isDarkTheme ? 0xFFA0A0A0 : 0x99000000);
     return FlatButton(
         child: Row(
           children: <Widget>[
-            Icon(icon, size: 24, color: Colors.black54),
+            Icon(icon, size: 24, color: color),
             SizedBox(height: 50, width: 12),
-            Text(title)
+            Text(title, style: TextStyle(color:color))
           ],
         ),
         onPressed: onPressed);

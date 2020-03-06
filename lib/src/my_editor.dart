@@ -120,8 +120,7 @@ class _MyEditorPageState extends State<MyEditorPage> {
               primaryColorBrightness: Brightness.dark,
               appBarTheme: AppBarTheme(
                   color: Color(0xFF282828),
-                  iconTheme: IconThemeData(color: Color(0x99FFFFFF)),
-                  textTheme: TextTheme(button: TextStyle(color: Colors.red)))),
+                  iconTheme: IconThemeData(color: Color(0x99FFFFFF)))),
           child: result);
     } else {
       return Theme(
@@ -141,11 +140,12 @@ class _MyEditorPageState extends State<MyEditorPage> {
         context: context,
         barrierDismissible: true,
         builder: (_) => AlertDialog(
-          contentPadding: EdgeInsets.fromLTRB(24, 24, 16, 16),
+              contentPadding: EdgeInsets.fromLTRB(24, 24, 16, 16),
               backgroundColor:
                   widget.darkTheme ? Color(0x66ffffff) : Colors.white,
               content: Text('您需要先写点东西，然后才能发表哦',
-                  style: TextStyle(fontSize: ScreenUtil().setSp(17), height: 1.5)),
+                  style:
+                      TextStyle(fontSize: ScreenUtil().setSp(17), height: 1.5)),
               actions: <Widget>[
                 new FlatButton(
                   child: new Text("我知道了",

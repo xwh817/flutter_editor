@@ -166,7 +166,9 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
       controls: widget.selectionControls ?? defaultSelectionControls(context),
     ));
 
-    return Stack(fit: StackFit.expand, children: layers);
+    //return Stack(fit: StackFit.expand, children: layers);
+    Color bgColor = ZefyrTheme.isThemeDark(context) ? Color(0xFF111111) : Colors.white;
+    return Container(color:bgColor, child:Stack(fit: StackFit.expand, children: layers));
   }
 
   @override

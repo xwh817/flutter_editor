@@ -153,7 +153,7 @@ class _ZefyrLineState extends State<ZefyrLine> {
     EmbedAttribute embed = node.style.get(NotusAttribute.embed);
 
     if (embed.type == EmbedType.horizontalRule) {
-      return ZefyrHorizontalRule(node: node);
+      return ZefyrHorizontalRule(ZefyrTheme.isThemeDark(context), node: node);
     } else if (embed.type == EmbedType.image) {
       return ZefyrImage(node: node, delegate: scope.imageDelegate);
     } else {
