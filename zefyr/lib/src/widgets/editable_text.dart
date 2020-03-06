@@ -4,6 +4,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:notus/notus.dart';
 
 import 'code.dart';
@@ -103,7 +104,7 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
   FocusNode _focusNode;
   FocusAttachment _focusAttachment;
 
-  bool isEmpty = true;  // 内容是否为空
+  bool isEmpty = true; // 内容是否为空
 
   /// Express interest in interacting with the keyboard.
   ///
@@ -253,7 +254,9 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
         keyboardType: TextInputType.multiline,
         maxLines: null, // 通过设置keyboardType自动换行
         style: TextStyle(
-            fontWeight: FontWeight.w600, fontSize: 20, height: 1.25),
+            fontWeight: FontWeight.w600,
+            fontSize: ScreenUtil().setSp(20),
+            height: 1.25),
         decoration: InputDecoration(
           hintText: '请输入标题',
           hintStyle:
@@ -263,22 +266,24 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
         ));
   }
 
-
+  // 控件的hintText居然在底部，只能自己模拟实现了
   Widget _addHintText(Widget target) {
     if (this.isEmpty) {
       return Stack(
-      children: <Widget>[
-        target,
-        Padding(
-            padding: EdgeInsets.only(top:8),
-            child: Text('开始讲述你的故事...',
-                style: TextStyle(color: Colors.black38, fontSize: 18.0)))
-      ],
-    );
+        children: <Widget>[
+          target,
+          Padding(
+              padding: EdgeInsets.only(
+                  top: ScreenUtil().setHeight(4) +
+                      MediaQuery.of(context).devicePixelRatio * 1.5),
+              child: Text('开始讲述你的故事...',
+                  style: TextStyle(
+                      color: Colors.black38, fontSize: ScreenUtil().setSp(18))))
+        ],
+      );
     } else {
       return target;
     }
-    
   }
 
   Widget _defaultChildBuilder(BuildContext context, Node node) {
@@ -343,9 +348,8 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
     _input.updateRemoteValue(widget.controller.plainTextEditingValue);
     _cursorTimer.startOrStop(_focusNode, selection);
 
-
     bool isEmpty = widget.controller.document.toString().length <= 4;
-      //print("isEmpty: ${isEmpty}, text内容：" + widget.controller.plainTextEditingValue.text);
+    //print("isEmpty: ${isEmpty}, text内容：" + widget.controller.plainTextEditingValue.text);
     setState(() {
       this.isEmpty = isEmpty;
     });

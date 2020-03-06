@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zefyr/zefyr.dart';
 import 'package:quill_delta/quill_delta.dart';
 import 'dart:convert';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'images.dart';
 
@@ -30,7 +31,6 @@ class _MyEditorPageState extends State<MyEditorPage> {
   @override
   void initState() {
     print('initState');
-
     _controller.document.changes.listen((change) {
       //获取数据的方式有一些
       /* _delta = _controller.document.toDelta();
@@ -39,9 +39,7 @@ class _MyEditorPageState extends State<MyEditorPage> {
          */
       //String string = _controller.document.toString();
       // 注意加上这行，文本变化的时候，可能会刷新下面的按钮。
-      setState(() {
-
-      });
+      setState(() {});
     });
     super.initState();
   }
@@ -54,27 +52,35 @@ class _MyEditorPageState extends State<MyEditorPage> {
       mediaQueryData = MediaQuery.of(context);
       final size = mediaQueryData.size;
       print("屏幕宽度：${size.width}, 密度：${mediaQueryData.devicePixelRatio}");
+
+      // 屏幕适配
+      ScreenUtil.init(context);
+      // allowFontScaling设置字体大小根据系统的“字体大小”辅助选项来进行缩放,默认为false
+      ScreenUtil.init(context, width: 360, height: 640);
     }
 
     final result = Scaffold(
       resizeToAvoidBottomPadding: true,
-      appBar: AppBar(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(ScreenUtil().setHeight(40)),
+        child:AppBar(
         elevation: 0.5,
         actions: [
           Container(
-            width: 72,
+            width: ScreenUtil().setWidth(90),
             child: FlatButton(
               padding: EdgeInsets.symmetric(horizontal: 0),
-              child: Text('草稿箱', style: TextStyle(fontSize: 16.0)),
+              child: Text('草稿箱',
+                  style: TextStyle(fontSize: ScreenUtil().setSp(16))),
               onPressed: () {},
             ),
           ),
           Container(
-            width: 72,
+            width: ScreenUtil().setWidth(60),
             margin: EdgeInsets.only(right: 6),
             child: FlatButton(
               padding: EdgeInsets.symmetric(horizontal: 0),
-              child: Text('发表', style: TextStyle(fontSize: 16.0)),
+              child: Text('发表', style: TextStyle(fontSize: ScreenUtil().setSp(16))),
               onPressed: () {
                 String text = _controller.document.toJson().toString();
                 print("发表：$text");
@@ -82,7 +88,7 @@ class _MyEditorPageState extends State<MyEditorPage> {
             ),
           ),
         ],
-      ),
+      )),
       body: ZefyrScaffold(
         child: ZefyrField(
           height: double.infinity,

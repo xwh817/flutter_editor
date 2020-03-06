@@ -70,12 +70,22 @@ class ZefyrThemeData {
     this.toolbarTheme,
   });
 
+  // 该控件的字体不知道是啥单元。。。
+  static double _getFontSize(BuildContext context) {
+    if (MediaQuery.of(context).devicePixelRatio >= 2.75) {
+      return 20;
+    } else {
+      return 17.5;
+    }
+  }
+
   /// The default editor theme.
   factory ZefyrThemeData.fallback(BuildContext context) {
     final defaultStyle = DefaultTextStyle.of(context);
     final defaultLineTheme = LineTheme( // 文本样式
       textStyle: defaultStyle.style.copyWith(
-        fontSize: 8.0 * MediaQuery.of(context).devicePixelRatio + (2.75 - MediaQuery.of(context).devicePixelRatio)*2.0,
+        //fontSize: 8.0 * MediaQuery.of(context).devicePixelRatio + (2.75 - MediaQuery.of(context).devicePixelRatio)*2.0,
+        fontSize: _getFontSize(context),
         height: 1.6,  // 文本行高
       ),
       padding: EdgeInsets.symmetric(vertical: 8.0),

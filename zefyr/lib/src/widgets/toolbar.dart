@@ -4,6 +4,7 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:notus/notus.dart';
 
 import 'buttons.dart';
@@ -404,6 +405,11 @@ class _ZefyrButtonListState extends State<ZefyrButtonList> {
       children: widget.buttons,
       physics: ClampingScrollPhysics(),
     ); */
+
+    // 屏幕适配
+    ScreenUtil.init(context);
+    // allowFontScaling设置字体大小根据系统的“字体大小”辅助选项来进行缩放,默认为false
+    ScreenUtil.init(context, width: 360, height: 640);
 
     return Row(children: widget.buttons);
     /* final leftArrow = _showLeftArrow

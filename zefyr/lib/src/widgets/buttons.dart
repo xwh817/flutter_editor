@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:notus/notus.dart';
-import 'package:url_launcher/url_launcher.dart';
+//import 'package:url_launcher/url_launcher.dart';
 
 import 'scope.dart';
 import 'theme.dart';
@@ -450,10 +450,10 @@ class _LinkButtonState extends State<LinkButton> {
     final editor = ZefyrToolbar.of(context).editor;
     var link = getLink();
     assert(link != null);
-    if (await canLaunch(link)) {
+    /* if (await canLaunch(link)) {
       editor.hideKeyboard();
       await launch(link, forceWebView: true);
-    }
+    } */
   }
 
   void _handleInputChange() {
