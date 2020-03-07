@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:quill_delta/quill_delta.dart';
 
@@ -81,6 +82,14 @@ class NotusDocument {
 
   dynamic toJson() {
     return _delta.toJson();
+  }
+
+  String toJsonText(String title) {
+    var items = [];
+    items.add({'title':title});
+    _delta.toList().forEach((item) => items.add(item));
+
+    return jsonEncode(items);
   }
 
   /// Returns `true` if this document and associated stream of [changes]

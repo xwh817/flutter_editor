@@ -37,8 +37,8 @@ class ZefyrApp extends StatelessWidget {
         "/fullPage": buildFullPage,
         "/form": buildFormPage,
         "/view": buildViewPage,
-        "/editor_light": (context) => MyEditorPage(false),
-        "/editor_dark": (context) => MyEditorPage(true),
+        "/editor_light": (context) => MyEditorPage(darkTheme: false),
+        "/editor_dark": (context) => MyEditorPage(darkTheme: true),
       },
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
@@ -71,7 +71,7 @@ class HomePage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Expanded(child: Container()),
-          RaisedButton(
+          /* RaisedButton(
             onPressed: () => nav.pushNamed('/fullPage'),
             child: Text('Full page editor'),
           ),
@@ -82,7 +82,7 @@ class HomePage extends StatelessWidget {
           RaisedButton(
             onPressed: () => nav.pushNamed('/view'),
             child: Text('Read-only embeddable view'),
-          ),
+          ), */
           RaisedButton(
             onPressed: () => nav.pushNamed('/editor_light'),
             child: Text('白天模式'),
@@ -90,6 +90,11 @@ class HomePage extends StatelessWidget {
           RaisedButton(
             onPressed: () => nav.pushNamed('/editor_dark'),
             child: Text('夜间模式'),
+          ),
+          RaisedButton(
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => MyEditorPage(darkTheme: false, inited: true))),
+            child: Text('打开文章'),
           ),
           Expanded(child: Container()),
         ],

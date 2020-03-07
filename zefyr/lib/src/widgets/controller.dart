@@ -50,6 +50,12 @@ class ZefyrController extends ChangeNotifier {
   NotusStyle get toggledStyles => _toggledStyles;
   NotusStyle _toggledStyles = NotusStyle();
 
+  String _title = '';
+  String get title => _title;
+  set title(String str) {
+    _title = str;
+  }
+
   /// Updates selection with specified [value].
   ///
   /// [value] and [source] cannot be `null`.

@@ -44,7 +44,7 @@ class ZefyrQuote extends StatelessWidget {
     final row = Row(children: <Widget>[Expanded(child: content)]);
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xFFF6F6F6),
+        color: Color(ZefyrTheme.isThemeDark(context)? 0x11666666 : 0xFFF6F6F6),
         border: Border(
           left: BorderSide(width: 4.0, color: Color(0xFF8E8E8E)),
         ),

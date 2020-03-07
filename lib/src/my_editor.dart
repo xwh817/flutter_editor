@@ -8,40 +8,38 @@ import 'images.dart';
 
 class MyEditorPage extends StatefulWidget {
   final bool darkTheme;
-  MyEditorPage(this.darkTheme, {Key key}) : super(key: key);
+  final bool inited;
+  MyEditorPage({Key key, this.darkTheme = false, this.inited = false})
+      : super(key: key);
 
   @override
   _MyEditorPageState createState() => _MyEditorPageState();
 }
 
-String initText;
-//String initText = r'[{"insert":"Test"}, {"insert":"\n"}]';
-
-Delta getDelta() {
-  return Delta.fromJson(json.decode(initText) as List);
-}
-
 class _MyEditorPageState extends State<MyEditorPage> {
-  final ZefyrController _controller = ZefyrController(
-      initText == null ? NotusDocument() : NotusDocument.fromDelta(getDelta()));
+  ZefyrController _controller;
   final FocusNode _focusNode = FocusNode();
+  String _title;
 
-  //bool _darkTheme = true;
+  Delta getDelta() {
+    String initText = r'[{"title":"好好学习天天向上"},{"insert":"我们要好好学习天天向上好好学习天天向上好好学习天天向上。\n"},{"insert":"​","attributes":{"embed":{"type":"hr"}}},{"insert":"\n1111"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"2222222"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"33333333"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上。"},{"insert":"\n","attributes":{"block":"quote"}}]';
+    List items = json.decode(initText) as List;
+    _title = items[0]['title'];
+    return Delta.fromJson(items.sublist(1));
+  }
 
   @override
   void initState() {
     print('initState');
+    _controller = ZefyrController(
+        widget.inited ? NotusDocument.fromDelta(getDelta()) : NotusDocument());
     _controller.document.changes.listen((change) {
-      //获取数据的方式有一些
-      /* _delta = _controller.document.toDelta();
-        json = _controller.document.toJson();
-        plainText = _controller.document.toPlainText();
-         */
-      //String string = _controller.document.toString();
-
       // 注意加上这行，文本变化的时候，可能会刷新下面的按钮。
       setState(() {});
     });
+    if (_title != null) {
+      _controller.title = _title;
+    }
     super.initState();
   }
 
@@ -86,8 +84,8 @@ class _MyEditorPageState extends State<MyEditorPage> {
                   padding: EdgeInsets.symmetric(horizontal: 0),
                   child: Text('发表', style: buttonStyle),
                   onPressed: () {
-                    //String text = _controller.document.toJson().toString();
-                    print("发表：${_controller.document.length}");
+                    String text = _controller.document.toJsonText(_controller.title);
+                    print("发表：${_controller.document.length}, content:$text");
                     if (_controller.document.length <= 1) {
                       _showInfoDialog();
                     }

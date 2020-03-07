@@ -167,8 +167,10 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
     ));
 
     //return Stack(fit: StackFit.expand, children: layers);
-    Color bgColor = ZefyrTheme.isThemeDark(context) ? Color(0xFF111111) : Colors.white;
-    return Container(color:bgColor, child:Stack(fit: StackFit.expand, children: layers));
+    Color bgColor =
+        ZefyrTheme.isThemeDark(context) ? Color(0xFF111111) : Colors.white;
+    return Container(
+        color: bgColor, child: Stack(fit: StackFit.expand, children: layers));
   }
 
   @override
@@ -178,6 +180,8 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
     _focusAttachment = _focusNode.attach(context);
     _input = InputConnectionController(_handleRemoteValueChange);
     _updateSubscriptions();
+
+    isEmpty = widget.controller.title.isEmpty;
   }
 
   @override
@@ -251,10 +255,23 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
   }
 
   Widget _buildTitle() {
-    Color textColor = Color(ZefyrTheme.isThemeDark(context) ? 0x99FFFFFF : 0xDE000000);
-    Color hintTextColor = Color(ZefyrTheme.isThemeDark(context) ? 0x66FFFFFF : 0x99000000);
+    Color textColor =
+        Color(ZefyrTheme.isThemeDark(context) ? 0x99FFFFFF : 0xDE000000);
+    Color hintTextColor =
+        Color(ZefyrTheme.isThemeDark(context) ? 0x66FFFFFF : 0x99000000);
+    
+    // 初始化输入框，光标处于最后
+    TextEditingController controller = TextEditingController.fromValue(
+        TextEditingValue(
+            text: widget.controller.title,
+            selection: TextSelection.fromPosition(TextPosition(
+                affinity: TextAffinity.downstream,
+                offset: widget.controller.title.length))));
+
     return TextField(
-        autofocus: true,
+        autofocus: widget.controller.title.isEmpty,
+        controller: controller,
+        onChanged: (text) => {widget.controller.title = text},
         keyboardType: TextInputType.multiline,
         maxLines: null, // 通过设置keyboardType自动换行
         style: TextStyle(
@@ -273,7 +290,8 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
 
   // 控件的hintText居然在底部，只能自己模拟实现了
   Widget _addHintText(Widget target) {
-    Color hintTextColor = Color(ZefyrTheme.isThemeDark(context) ? 0x66FFFFFF : 0x99000000);
+    Color hintTextColor =
+        Color(ZefyrTheme.isThemeDark(context) ? 0x66FFFFFF : 0x99000000);
     if (this.isEmpty) {
       return Stack(
         children: <Widget>[
