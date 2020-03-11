@@ -4,6 +4,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:markdown_editor/src/test_scroll.dart';
 
 import 'src/form.dart';
 import 'src/full_page.dart';
@@ -95,6 +96,11 @@ class HomePage extends StatelessWidget {
             onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => MyEditorPage(darkTheme: false, inited: true))),
             child: Text('打开文章'),
+          ),
+          RaisedButton(
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => TestScroll())),
+            child: Text('Test'),
           ),
           Expanded(child: Container()),
         ],

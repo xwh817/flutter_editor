@@ -29,7 +29,7 @@ class ZefyrList extends StatelessWidget {
     EdgeInsets padding = isNumberList
         ? theme.attributeTheme.numberList.padding
         : theme.attributeTheme.bulletList.padding;
-    padding = padding.copyWith(left: 4.0);  //  修改左边距
+    padding = padding.copyWith(left: 4.0); //  修改左边距
 
     return Padding(
       padding: padding,
@@ -80,8 +80,11 @@ class ZefyrListItem extends StatelessWidget {
       padding = blockTheme.linePadding;
     }
 
-    Widget bullet =
-        SizedBox(width: 24.0, child: Text(bulletText, style: textStyle));
+    Widget bullet = SizedBox(
+        width: 24.0,
+        child: Text(bulletText,
+            style: theme.defaultLineTheme.textStyle
+                .copyWith(fontSize: 18, height: 1.46)));
     if (padding != null) {
       bullet = Padding(padding: padding, child: bullet);
     }

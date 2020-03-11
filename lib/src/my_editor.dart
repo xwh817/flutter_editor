@@ -22,7 +22,9 @@ class _MyEditorPageState extends State<MyEditorPage> {
   String _title;
 
   Delta getDelta() {
-    String initText = r'[{"title":"好好学习天天向上"},{"insert":"我们要好好学习天天向上好好学习天天向上好好学习天天向上。\n"},{"insert":"​","attributes":{"embed":{"type":"hr"}}},{"insert":"\n1111"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"2222222"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"33333333"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上。"},{"insert":"\n","attributes":{"block":"quote"}}]';
+    String initText = r'[{"title":"好好学习天天向上"},{"insert":"我们要好好学习天天向上好好学习天天向上好好学习天天向上。\n"},{"insert":"​","attributes":{"embed":{"type":"hr"}}},{"insert":"\n1111"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"2222222"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"33333333"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上。"},{"insert":"\n","attributes":{"block":"quote"}},{"insert":"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTest\n"}]';
+
+    //String initText = r'[{"title":"好好学习天天向上"},{"insert":"123我们要好好学习天天向上好好学习天天向上好好学习天天向上。    我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上123。\n"}]';
     List items = json.decode(initText) as List;
     _title = items[0]['title'];
     return Delta.fromJson(items.sublist(1));
@@ -59,8 +61,13 @@ class _MyEditorPageState extends State<MyEditorPage> {
     }
 
     TextStyle buttonStyle = TextStyle(
-        color: Color(widget.darkTheme ? 0x99FFFFFF : 0xDE000000),
+        color: Color(widget.darkTheme ? 0xDEFFFFFF : 0xDE000000),
         fontSize: ScreenUtil().setSp(16));
+    
+    TextStyle buttonStyleGrey = TextStyle(
+        color: Color(widget.darkTheme ? 0x99FFFFFF : 0x99000000),
+        fontSize: ScreenUtil().setSp(16));
+    
 
     final result = Scaffold(
       resizeToAvoidBottomPadding: true,
@@ -73,7 +80,7 @@ class _MyEditorPageState extends State<MyEditorPage> {
                 width: ScreenUtil().setWidth(90),
                 child: FlatButton(
                   padding: EdgeInsets.symmetric(horizontal: 0),
-                  child: Text('草稿箱', style: buttonStyle),
+                  child: Text('草稿箱', style: buttonStyleGrey),
                   onPressed: () {},
                 ),
               ),

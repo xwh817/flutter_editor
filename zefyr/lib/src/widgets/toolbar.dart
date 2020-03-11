@@ -100,6 +100,7 @@ class ZefyrToolbarScaffold extends StatelessWidget {
       child: Material(
           color: theme.color,
           child: Row(children: [
+            SizedBox(width: 2),
             this.trailing,
             Expanded(child: Container()),
             this.body,
@@ -293,7 +294,7 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
                 showImageDialog()
               }), */
 
-      SizedBox(width: 8), // 间隔
+      SizedBox(width: 4), // 间隔
     ];
     return buttons;
   }
