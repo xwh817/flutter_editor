@@ -37,7 +37,7 @@ class ZefyrEditableText extends StatefulWidget {
     @required this.focusNode,
     @required this.imageDelegate,
     this.selectionControls,
-    this.autofocus = true,
+    this.autofocus = false,
     this.mode = ZefyrMode.edit,
     this.padding = const EdgeInsets.symmetric(horizontal: 16.0),
     this.physics,
@@ -244,7 +244,17 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
 
     for (var node in document.root.children) {
       result.add(_defaultChildBuilder(context, node));
+
+      /* result.add(TextField(
+        keyboardType: TextInputType.multiline,
+        maxLines: null,
+        style: TextStyle(height: 1.5, fontSize: 18),
+        decoration:
+            InputDecoration(border: InputBorder.none), 
+        controller: TextEditingController(text:node.toPlainText()),
+      )); */
     }
+
 
     if (result.length > 1) {
       Widget hintTarget = result[1];
@@ -317,7 +327,16 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
       } else if (node.style.contains(NotusAttribute.heading)) {
         return ZefyrHeading(node: node);
       }
-      return ZefyrParagraph(node: node);
+      //return ZefyrParagraph(node: node);
+
+      return TextField(
+        keyboardType: TextInputType.multiline,
+        maxLines: null,
+        style: TextStyle(height: 1.5, fontSize: 18),
+        decoration:
+            InputDecoration(border: InputBorder.none), 
+        controller: TextEditingController(text:node.toPlainText()),
+      );
     }
 
     final BlockNode block = node;

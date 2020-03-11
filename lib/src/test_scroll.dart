@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 
 class TestScroll extends StatelessWidget {
+  TestScroll() {
+    init();
+  }
+
+  final TextEditingController _editingController = TextEditingController();
+  void init() {
+    _editingController.addListener(() {
+      //print('Editing: ' + _editingController.text);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,7 +20,7 @@ class TestScroll extends StatelessWidget {
             child: ListBody(children: <Widget>[
           Container(height: 200, color: Colors.green),
           Container(height: 200, color: Colors.red),
-          _buildItem(),
+          _buildItem(controller:_editingController),
           _buildItem(),
           _buildItem(),
           Container(height: 200, color: Colors.orange),
@@ -18,13 +29,23 @@ class TestScroll extends StatelessWidget {
         ])));
   }
 
-  Widget _buildItem() {
+  Widget _buildItem({TextEditingController controller}) {
     return Container(
       //height: 200,
+      padding: EdgeInsets.symmetric(horizontal: 12),
       child: TextField(
         keyboardType: TextInputType.multiline,
         maxLines: null,
-        decoration: InputDecoration(border: InputBorder.none), // 通过设置keyboardType自动换行
+        controller: controller,
+        focusNode: FocusNode(
+          onKey:(focusNode, event) {
+            print('onKey: $event');
+            return false;
+          }
+        ),
+        style: TextStyle(height: 1.5, fontSize: 18),
+        decoration:
+            InputDecoration(border: InputBorder.none), // 通过设置keyboardType自动换行
       ),
     );
   }
