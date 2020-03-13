@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -161,16 +162,17 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
       child: body,
     );
 
-    final layers = <Widget>[body];
-    layers.add(ZefyrSelectionOverlay(
-      controls: widget.selectionControls ?? defaultSelectionControls(context),
-    ));
-
     //return Stack(fit: StackFit.expand, children: layers);
     Color bgColor =
         ZefyrTheme.isThemeDark(context) ? Color(0xFF111111) : Colors.white;
     return Container(
-        color: bgColor, child: Stack(fit: StackFit.expand, children: layers));
+        color: bgColor,
+        child: Stack(fit: StackFit.expand, children: [
+          body,
+          ZefyrSelectionOverlay(
+            controls: defaultSelectionControls(context),
+          )
+        ]));
   }
 
   @override
@@ -182,6 +184,10 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
     _updateSubscriptions();
 
     isEmpty = widget.controller.title.isEmpty;
+
+    _scrollController.addListener((){
+      //print('_scrollController');
+    });
   }
 
   @override
@@ -255,7 +261,6 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
       )); */
     }
 
-
     if (result.length > 1) {
       Widget hintTarget = result[1];
       result[1] = _addHintText(hintTarget);
@@ -269,7 +274,7 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
         Color(ZefyrTheme.isThemeDark(context) ? 0x99FFFFFF : 0xDE000000);
     Color hintTextColor =
         Color(ZefyrTheme.isThemeDark(context) ? 0x66FFFFFF : 0x99000000);
-    
+
     // 初始化输入框，光标处于最后
     TextEditingController controller = TextEditingController.fromValue(
         TextEditingValue(
@@ -327,16 +332,13 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
       } else if (node.style.contains(NotusAttribute.heading)) {
         return ZefyrHeading(node: node);
       }
-      //return ZefyrParagraph(node: node);
+      return ZefyrParagraph(node: node);
 
-      return TextField(
-        keyboardType: TextInputType.multiline,
+      /* return Text(
+        node.toPlainText(),
         maxLines: null,
         style: TextStyle(height: 1.5, fontSize: 18),
-        decoration:
-            InputDecoration(border: InputBorder.none), 
-        controller: TextEditingController(text:node.toPlainText()),
-      );
+      ); */
     }
 
     final BlockNode block = node;
@@ -383,6 +385,7 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
 
   // Triggered for both text and selection changes.
   void _handleLocalValueChange() {
+    //print('_handleLocalValueChange');
     if (widget.mode.canEdit &&
         widget.controller.lastChangeSource == ChangeSource.local) {
       // Only request keyboard for user actions.

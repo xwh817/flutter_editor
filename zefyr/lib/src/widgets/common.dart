@@ -16,6 +16,11 @@ import 'theme.dart';
 
 /// Represents single line of rich text document in Zefyr editor.
 class ZefyrLine extends StatefulWidget {
+
+  static double caretPosition = 0.0;
+  static double fullHeight = 0.0;
+  
+
   const ZefyrLine({Key key, @required this.node, this.style, this.padding})
       : assert(node != null),
         super(key: key);
@@ -33,6 +38,7 @@ class ZefyrLine extends StatefulWidget {
   @override
   _ZefyrLineState createState() => _ZefyrLineState();
 }
+
 
 class _ZefyrLineState extends State<ZefyrLine> {
   final LayerLink _link = LayerLink();
@@ -104,16 +110,28 @@ class _ZefyrLineState extends State<ZefyrLine> {
     final RenderAbstractViewport viewport = RenderAbstractViewport.of(object);
     assert(viewport != null);
 
+    //print('bringIntoView, top:${viewport.getOffsetToReveal(object, 0.0).offset}, bottom:${viewport.getOffsetToReveal(object, 1.0).offset}');
+    // offset为界面滚动位置
     final double offset = scrollable.position.pixels;
-    double target = viewport.getOffsetToReveal(object, 0.0).offset;
-    if (target - offset < 0.0) {
-      scrollable.position.jumpTo(target);
-      return;
+    double targetTop = viewport.getOffsetToReveal(object, 0.0).offset + ZefyrLine.caretPosition;
+    if (targetTop - offset < 0.0) {  // target为输入位置，如果在滚动位置上面，向上滚
+      scrollable.position.jumpTo(targetTop);
+      print('targetTop:$targetTop, offset: $offset, jump to top: $targetTop ');
+    } else {
+      // viewport.getOffsetToReveal(object, 1.0).offset 到这个位置需要滚动的距离（为负数表示当前位置还要向下滚）
+      double targetBottom = viewport.getOffsetToReveal(object, 1.0).offset - (ZefyrLine.fullHeight - ZefyrLine.caretPosition) ;
+      if (targetBottom - offset > 0.0) {
+        scrollable.position.jumpTo(targetBottom);
+        print('targetBottom: $targetBottom,  offset: $offset, jump to bottom: $targetBottom ');
+      }
     }
-    target = viewport.getOffsetToReveal(object, 1.0).offset;
-    if (target - offset > 0.0) {
-      scrollable.position.jumpTo(target);
-    }
+
+    /* if (ZefyrLine.caretPosition < offset) {
+      scrollable.position.jumpTo(ZefyrLine.caretPosition);
+      print('jump to top: ${ZefyrLine.caretPosition}, offset: $offset');
+    } */
+    
+
   }
 
   TextSpan buildText(BuildContext context) {

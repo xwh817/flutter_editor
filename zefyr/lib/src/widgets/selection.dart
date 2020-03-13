@@ -237,6 +237,7 @@ class _ZefyrSelectionOverlayState extends State<ZefyrSelectionOverlay>
   }
 
   void _handleTap() {
+    print('_handleTap');
     assert(_lastTapDownPosition != null);
     final globalPoint = _lastTapDownPosition;
     _lastTapDownPosition = null;

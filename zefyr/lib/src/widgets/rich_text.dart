@@ -8,6 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:notus/notus.dart';
 
+import '../../zefyr.dart';
 import 'caret.dart';
 import 'editable_box.dart';
 
@@ -109,13 +110,23 @@ class RenderZefyrParagraph extends RenderParagraph
     );
   }
 
+  /// 获取光标在“当前段”文本中的位置（换行之后从0开始）
   @override
   Offset getOffsetForCaret(TextPosition position, Rect caretPrototype) {
+    // 文本index
     final localPosition = TextPosition(
       offset: position.offset - node.documentOffset,
       affinity: position.affinity,
     );
-    return super.getOffsetForCaret(localPosition, caretPrototype);
+    Offset offset = super.getOffsetForCaret(localPosition, caretPrototype);
+    //print('getOffsetForCaret: localPosition: ${localPosition.offset}, offset: $offset');
+    ZefyrLine.caretPosition = offset.dy;
+
+    double fullHeight = super.getOffsetForCaret(TextPosition(offset: node.length-1), caretPrototype).dy;
+    ZefyrLine.fullHeight = fullHeight;
+
+    //print('caretPosition: ${ZefyrLine.caretPosition}, fullHeight: $fullHeight');
+    return offset;
   }
 
   // This method works around some issues in getBoxesForSelection and handles

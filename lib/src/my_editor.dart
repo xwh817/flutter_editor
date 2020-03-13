@@ -22,9 +22,10 @@ class _MyEditorPageState extends State<MyEditorPage> {
   String _title;
 
   Delta getDelta() {
-    String initText = r'[{"title":"好好学习天天向上"},{"insert":"我们要好好学习天天向上好好学习天天向上好好学习天天向上。\n"},{"insert":"​","attributes":{"embed":{"type":"hr"}}},{"insert":"\n1111"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"2222222"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"33333333"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上。"},{"insert":"\n","attributes":{"block":"quote"}},{"insert":"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTest\n"}]';
+    //String initText = r'[{"title":"好好学习天天向上"},{"insert":"我们要好好学习天天向上好好学习天天向上好好学习天天向上。\n"},{"insert":"​","attributes":{"embed":{"type":"hr"}}},{"insert":"\n1111"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"2222222"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"33333333"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上。"},{"insert":"\n","attributes":{"block":"quote"}},{"insert":"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTest\n"}]';
 
-    //String initText = r'[{"title":"好好学习天天向上"},{"insert":"123我们要好好学习天天向上好好学习天天向上好好学习天天向上。    我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上123。\n"}]';
+    String initText =
+        r'[{"title":"好好学习天天向上"},{"insert":"123我们要好好学习天天向上好好学习天天向上好好学习天天向上。    我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上123。\n"}]';
     List items = json.decode(initText) as List;
     _title = items[0]['title'];
     return Delta.fromJson(items.sublist(1));
@@ -63,11 +64,10 @@ class _MyEditorPageState extends State<MyEditorPage> {
     TextStyle buttonStyle = TextStyle(
         color: Color(widget.darkTheme ? 0xDEFFFFFF : 0xDE000000),
         fontSize: ScreenUtil().setSp(16));
-    
+
     TextStyle buttonStyleGrey = TextStyle(
         color: Color(widget.darkTheme ? 0x99FFFFFF : 0x99000000),
         fontSize: ScreenUtil().setSp(16));
-    
 
     final result = Scaffold(
       resizeToAvoidBottomPadding: true,
@@ -81,7 +81,12 @@ class _MyEditorPageState extends State<MyEditorPage> {
                 child: FlatButton(
                   padding: EdgeInsets.symmetric(horizontal: 0),
                   child: Text('草稿箱', style: buttonStyleGrey),
-                  onPressed: () {},
+                  onPressed: () {
+                    final cursorPosition = _controller.selection.extentOffset;
+                    _controller.updateSelection(_controller.selection.copyWith(
+                        extentOffset: cursorPosition + 1,
+                        baseOffset: cursorPosition + 1));
+                  },
                 ),
               ),
               Container(
@@ -91,7 +96,8 @@ class _MyEditorPageState extends State<MyEditorPage> {
                   padding: EdgeInsets.symmetric(horizontal: 0),
                   child: Text('发表', style: buttonStyle),
                   onPressed: () {
-                    String text = _controller.document.toJsonText(_controller.title);
+                    String text =
+                        _controller.document.toJsonText(_controller.title);
                     print("发表：${_controller.document.length}, content:$text");
                     if (_controller.document.length <= 1) {
                       _showInfoDialog();
