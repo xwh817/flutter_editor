@@ -120,9 +120,9 @@ class _ZefyrLineState extends State<ZefyrLine> {
     } else {
       // viewport.getOffsetToReveal(object, 1.0).offset 到这个位置需要滚动的距离（为负数表示当前位置还要向下滚）
       double targetBottom = viewport.getOffsetToReveal(object, 1.0).offset - (ZefyrLine.fullHeight - ZefyrLine.caretPosition) ;
-      if (targetBottom - offset > 0.0) {
+      if (ZefyrLine.fullHeight > 0 && targetBottom - offset > 0.0) {
         scrollable.position.jumpTo(targetBottom);
-        print('targetBottom: $targetBottom,  offset: $offset, jump to bottom: $targetBottom ');
+        print('targetBottom: $targetBottom,  offset: $offset, jump to bottom: $targetBottom  fullHeight: ${ZefyrLine.fullHeight}');
       }
     }
 

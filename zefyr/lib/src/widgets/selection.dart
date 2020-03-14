@@ -244,6 +244,12 @@ class _ZefyrSelectionOverlayState extends State<ZefyrSelectionOverlay>
     HitTestResult result = HitTestResult();
     WidgetsBinding.instance.hitTest(result, globalPoint);
 
+    print('globalPoint: $globalPoint , titleHeight: ${ZefyrController.titleHeight}');
+
+    if (globalPoint.dy < (60.0+ZefyrController.titleHeight)) {
+      return null;
+    }
+
     RenderEditableProxyBox box = _getEditableBox(result);
     if (box == null) {
       box = _scope.renderContext.closestBoxForGlobalPoint(globalPoint);

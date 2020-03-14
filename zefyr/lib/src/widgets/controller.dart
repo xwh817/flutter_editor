@@ -56,6 +56,8 @@ class ZefyrController extends ChangeNotifier {
     _title = str;
   }
 
+  static double titleHeight = 50.0;
+
   /// Updates selection with specified [value].
   ///
   /// [value] and [source] cannot be `null`.

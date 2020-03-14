@@ -2,7 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -250,15 +249,6 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
 
     for (var node in document.root.children) {
       result.add(_defaultChildBuilder(context, node));
-
-      /* result.add(TextField(
-        keyboardType: TextInputType.multiline,
-        maxLines: null,
-        style: TextStyle(height: 1.5, fontSize: 18),
-        decoration:
-            InputDecoration(border: InputBorder.none), 
-        controller: TextEditingController(text:node.toPlainText()),
-      )); */
     }
 
     if (result.length > 1) {
@@ -269,6 +259,9 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
     return result;
   }
 
+
+  final GlobalKey globalKey = GlobalKey();
+  
   Widget _buildTitle() {
     Color textColor =
         Color(ZefyrTheme.isThemeDark(context) ? 0x99FFFFFF : 0xDE000000);
@@ -284,9 +277,14 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
                 offset: widget.controller.title.length))));
 
     return TextField(
+        key: globalKey,
         autofocus: widget.controller.title.isEmpty,
         controller: controller,
-        onChanged: (text) => {widget.controller.title = text},
+        onChanged: (text) {
+          widget.controller.title = text;
+          ZefyrController.titleHeight = globalKey.currentContext.size.height;
+          //print('title height: ${globalKey.currentContext.size.height}');
+        },
         keyboardType: TextInputType.multiline,
         maxLines: null, // 通过设置keyboardType自动换行
         style: TextStyle(

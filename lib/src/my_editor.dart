@@ -22,10 +22,8 @@ class _MyEditorPageState extends State<MyEditorPage> {
   String _title;
 
   Delta getDelta() {
-    //String initText = r'[{"title":"好好学习天天向上"},{"insert":"我们要好好学习天天向上好好学习天天向上好好学习天天向上。\n"},{"insert":"​","attributes":{"embed":{"type":"hr"}}},{"insert":"\n1111"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"2222222"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"33333333"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上。"},{"insert":"\n","attributes":{"block":"quote"}},{"insert":"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTest\n"}]';
-
-    String initText =
-        r'[{"title":"好好学习天天向上"},{"insert":"123我们要好好学习天天向上好好学习天天向上好好学习天天向上。    我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上123。\n"}]';
+    String initText = r'[{"title":"好好学习天天向上"},{"insert":"我们要好好学习天天向上好好学习天天向上好好学习天天向上。\n"},{"insert":"​","attributes":{"embed":{"type":"hr"}}},{"insert":"\n1111"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"2222222"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"33333333"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上。"},{"insert":"\n","attributes":{"block":"quote"}},{"insert":"很长很长的段落很长很长的文本很长很长的段落很长很长的文本很长很长的段落很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本\n"}]';
+    //String initText = r'[{"title":"好好学习天天向上"},{"insert":"123我们要好好学习天天向上好好学习天天向上好好学习天天向上。    我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上123。\n"}]';
     List items = json.decode(initText) as List;
     _title = items[0]['title'];
     return Delta.fromJson(items.sublist(1));
@@ -33,7 +31,9 @@ class _MyEditorPageState extends State<MyEditorPage> {
 
   @override
   void initState() {
-    print('initState');
+    //print('initState');
+    resetStatic();
+
     _controller = ZefyrController(
         widget.inited ? NotusDocument.fromDelta(getDelta()) : NotusDocument());
     _controller.document.changes.listen((change) {
@@ -44,6 +44,13 @@ class _MyEditorPageState extends State<MyEditorPage> {
       _controller.title = _title;
     }
     super.initState();
+  }
+
+  /// 为了在之前的代码上实现功能，添加了一写static变量来传递值，注意每次打开要恢复。
+  void resetStatic() {
+    ZefyrLine.caretPosition = 0.0;
+    ZefyrLine.fullHeight = 0.0;
+    ZefyrController.titleHeight = 50.0;
   }
 
   MediaQueryData mediaQueryData;
@@ -82,10 +89,7 @@ class _MyEditorPageState extends State<MyEditorPage> {
                   padding: EdgeInsets.symmetric(horizontal: 0),
                   child: Text('草稿箱', style: buttonStyleGrey),
                   onPressed: () {
-                    final cursorPosition = _controller.selection.extentOffset;
-                    _controller.updateSelection(_controller.selection.copyWith(
-                        extentOffset: cursorPosition + 1,
-                        baseOffset: cursorPosition + 1));
+                    
                   },
                 ),
               ),
@@ -96,12 +100,14 @@ class _MyEditorPageState extends State<MyEditorPage> {
                   padding: EdgeInsets.symmetric(horizontal: 0),
                   child: Text('发表', style: buttonStyle),
                   onPressed: () {
-                    String text =
-                        _controller.document.toJsonText(_controller.title);
+                    String text = _controller.document.toJsonText(_controller.title);
                     print("发表：${_controller.document.length}, content:$text");
                     if (_controller.document.length <= 1) {
-                      _showInfoDialog();
+                      _showInfoDialog('您需要先写点东西，然后才能发表哦');
+                    } else if (_controller.title.length ==0) {
+                      _showInfoDialog('您需要填写标题哦');
                     }
+
                   },
                 ),
               ),
@@ -110,16 +116,12 @@ class _MyEditorPageState extends State<MyEditorPage> {
       body: ZefyrScaffold(
         child: ZefyrField(
           height: double.infinity,
-          /* decoration: InputDecoration(
-                                    // 官方为解决的bug https://github.com/memspace/zefyr/issues/93
-                                    hintText: '开始讲述你的故事...', // 去掉默认的hint，不知道为啥就是不能顶部对齐。
-                                    border: InputBorder.none
-                                    ), */
           controller: _controller,
           focusNode: _focusNode,
           autofocus: false,
           imageDelegate: CustomImageDelegate(),
           physics: ClampingScrollPhysics(),
+          //mode: widget.inited ? ZefyrMode.select : ZefyrMode.edit,
         ),
       ),
     );
@@ -146,7 +148,7 @@ class _MyEditorPageState extends State<MyEditorPage> {
     }
   }
 
-  void _showInfoDialog() {
+  void _showInfoDialog(String info) {
     showDialog(
         context: context,
         barrierDismissible: true,
@@ -154,7 +156,7 @@ class _MyEditorPageState extends State<MyEditorPage> {
               contentPadding: EdgeInsets.fromLTRB(24, 24, 16, 16),
               backgroundColor:
                   widget.darkTheme ? Color(0x66ffffff) : Colors.white,
-              content: Text('您需要先写点东西，然后才能发表哦',
+              content: Text(info,
                   style:
                       TextStyle(fontSize: ScreenUtil().setSp(17), height: 1.5)),
               actions: <Widget>[

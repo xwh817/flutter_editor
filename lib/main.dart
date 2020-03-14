@@ -97,11 +97,11 @@ class HomePage extends StatelessWidget {
                 builder: (context) => MyEditorPage(darkTheme: false, inited: true))),
             child: Text('打开文章'),
           ),
-          RaisedButton(
+          /* RaisedButton(
             onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => TestScroll())),
             child: Text('Test'),
-          ),
+          ), */
           Expanded(child: Container()),
         ],
       ),
