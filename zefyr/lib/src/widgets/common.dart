@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:notus/notus.dart';
+import 'package:zefyr/zefyr.dart';
 
 import 'editable_box.dart';
 import 'horizontal_rule.dart';
@@ -17,8 +18,8 @@ import 'theme.dart';
 /// Represents single line of rich text document in Zefyr editor.
 class ZefyrLine extends StatefulWidget {
 
-  static double caretPosition = 0.0;
-  static double fullHeight = 0.0;
+  static double caretPosition = 0.0;  // 光标在当前段距离段首的位置
+  static double fullHeight = 0.0;     // 当前段的高度
   
 
   const ZefyrLine({Key key, @required this.node, this.style, this.padding})
@@ -46,9 +47,12 @@ class _ZefyrLineState extends State<ZefyrLine> {
   @override
   Widget build(BuildContext context) {
     final scope = ZefyrScope.of(context);
+    
     if (scope.isEditable) {
-      ensureVisible(context, scope);
+      // 有可能光标位置信息还没更新，这里做延时。
+      Future.delayed(Duration(milliseconds: 100), ()=>ensureVisible(context, scope));
     }
+
     final theme = Theme.of(context);
 
     Widget content;
@@ -110,27 +114,20 @@ class _ZefyrLineState extends State<ZefyrLine> {
     final RenderAbstractViewport viewport = RenderAbstractViewport.of(object);
     assert(viewport != null);
 
-    //print('bringIntoView, top:${viewport.getOffsetToReveal(object, 0.0).offset}, bottom:${viewport.getOffsetToReveal(object, 1.0).offset}');
     // offset为界面滚动位置
     final double offset = scrollable.position.pixels;
     double targetTop = viewport.getOffsetToReveal(object, 0.0).offset + ZefyrLine.caretPosition;
     if (targetTop - offset < 0.0) {  // target为输入位置，如果在滚动位置上面，向上滚
       scrollable.position.jumpTo(targetTop);
-      print('targetTop:$targetTop, offset: $offset, jump to top: $targetTop ');
+      //print('targetTop:$targetTop, offset: $offset, jump to top: $targetTop ');
     } else {
       // viewport.getOffsetToReveal(object, 1.0).offset 到这个位置需要滚动的距离（为负数表示当前位置还要向下滚）
       double targetBottom = viewport.getOffsetToReveal(object, 1.0).offset - (ZefyrLine.fullHeight - ZefyrLine.caretPosition) ;
-      if (ZefyrLine.fullHeight > 0 && targetBottom - offset > 0.0) {
+      if ((ZefyrLine.fullHeight > 0.0 ||ZefyrLine.caretPosition==0.0) && targetBottom - offset > 0.0) {
         scrollable.position.jumpTo(targetBottom);
-        print('targetBottom: $targetBottom,  offset: $offset, jump to bottom: $targetBottom  fullHeight: ${ZefyrLine.fullHeight}');
+        //print('${DateTime.now().millisecondsSinceEpoch} targetBottom: $targetBottom,  offset: $offset, jump to bottom: $targetBottom  fullHeight: ${ZefyrLine.fullHeight}');
       }
     }
-
-    /* if (ZefyrLine.caretPosition < offset) {
-      scrollable.position.jumpTo(ZefyrLine.caretPosition);
-      print('jump to top: ${ZefyrLine.caretPosition}, offset: $offset');
-    } */
-    
 
   }
 

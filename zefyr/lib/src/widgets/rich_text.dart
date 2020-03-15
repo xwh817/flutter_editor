@@ -123,9 +123,10 @@ class RenderZefyrParagraph extends RenderParagraph
     ZefyrLine.caretPosition = offset.dy;
 
     double fullHeight = super.getOffsetForCaret(TextPosition(offset: node.length-1), caretPrototype).dy;
-    ZefyrLine.fullHeight = fullHeight;
-
-    //print('caretPosition: ${ZefyrLine.caretPosition}, fullHeight: $fullHeight');
+    if (fullHeight != ZefyrLine.fullHeight) {
+      ZefyrLine.fullHeight = fullHeight;
+      //print('${DateTime.now().millisecondsSinceEpoch} caretPosition: ${ZefyrLine.caretPosition}, fullHeight: $fullHeight');
+    }
     return offset;
   }
 

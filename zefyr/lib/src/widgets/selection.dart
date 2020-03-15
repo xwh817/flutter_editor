@@ -244,9 +244,10 @@ class _ZefyrSelectionOverlayState extends State<ZefyrSelectionOverlay>
     HitTestResult result = HitTestResult();
     WidgetsBinding.instance.hitTest(result, globalPoint);
 
-    print('globalPoint: $globalPoint , titleHeight: ${ZefyrController.titleHeight}');
-
-    if (globalPoint.dy < (60.0+ZefyrController.titleHeight)) {
+    // 点击位置
+    //print('globalPoint: $globalPoint , titleHeight: ${ZefyrController.titleHeight}');
+    // 如果点击区域在标题上，就不处理事件，让标题去处理。
+    if (globalPoint.dy < (60.0+ZefyrController.titleHeight-ZefyrController.scrollOffset)) {
       return null;
     }
 

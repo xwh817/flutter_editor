@@ -57,6 +57,7 @@ class ZefyrController extends ChangeNotifier {
   }
 
   static double titleHeight = 50.0;
+  static double scrollOffset = 0.0;// 界面滚动距离
 
   /// Updates selection with specified [value].
   ///

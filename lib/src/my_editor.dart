@@ -51,6 +51,7 @@ class _MyEditorPageState extends State<MyEditorPage> {
     ZefyrLine.caretPosition = 0.0;
     ZefyrLine.fullHeight = 0.0;
     ZefyrController.titleHeight = 50.0;
+    ZefyrController.scrollOffset = 0.0;
   }
 
   MediaQueryData mediaQueryData;

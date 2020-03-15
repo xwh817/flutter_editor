@@ -185,7 +185,8 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
     isEmpty = widget.controller.title.isEmpty;
 
     _scrollController.addListener((){
-      //print('_scrollController');
+      //print('_scrollController: ${_scrollController.offset}');
+      ZefyrController.scrollOffset = _scrollController.offset;
     });
   }
 
