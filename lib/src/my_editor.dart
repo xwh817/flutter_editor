@@ -108,13 +108,16 @@ class _MyEditorPageState extends State<MyEditorPage> {
                   padding: EdgeInsets.symmetric(horizontal: 0),
                   child: Text('发表', style: buttonStyle),
                   onPressed: () {
-                    String text =
-                        _controller.document.toJsonText(_controller.title);
-                    print("发表：${_controller.document.length}, content:$text");
-                    if (_controller.document.length <= 1) {
+                    NotusDocument doc = _controller.document;
+                    if (doc.length <= 1) {
                       _showInfoDialog('您需要先写点东西，然后才能发表哦');
                     } else if (_controller.title.length == 0) {
                       _showInfoDialog('您需要填写标题哦');
+                    } else {
+                      String text = doc.toJsonText(_controller.title);
+                      print("发表：${doc.length}, content:$text");
+                      // 请求接口，提交text到后台
+
                     }
                   },
                 ),

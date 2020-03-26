@@ -12,7 +12,8 @@ dependencies:
     sdk: flutter
   collection: ^1.14.6
   quill_delta: ^1.0.0
-  notus: ^0.1.0
+  notus:
+    path: ../notus
   meta: ^1.1.0
   quiver_hashcode: ^2.0.0
   flutter_screenutil: ^1.0.2

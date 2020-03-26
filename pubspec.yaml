@@ -21,10 +21,6 @@ dependencies:
   zefyr:
     path: ./zefyr
 
-dependency_overrides:
-  notus:
-    path: ./notus
-
 dev_dependencies:
   flutter_localizations:
     sdk: flutter
