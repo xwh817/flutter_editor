@@ -345,11 +345,10 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
     if (image != null) {
       editor.controller.updateLoading(true);
       await ImageUtil.compressImage(image).then((path) {
-        ImageUtil.upLoadImage(path).then((success) {
-          print('');
-          editor.formatSelection(NotusAttribute.embed.image(path));
-          addNextLine();
-        });
+        return ImageUtil.upLoadImage(path);
+      }).then((imageUrl) {
+        editor.formatSelection(NotusAttribute.embed.image(imageUrl));
+        addNextLine();
       }).catchError((error) {
         print('图片上传失败：$error');
         Fluttertoast.showToast(

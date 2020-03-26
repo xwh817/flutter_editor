@@ -21,21 +21,20 @@ class _MyEditorPageState extends State<MyEditorPage> {
   final FocusNode _focusNode = FocusNode();
   String _title;
   bool isLoading = false;
-
   Delta getDelta() {
     String initText =
-        r'[{"title":"好好学习天天向上"},{"insert":"我们要好好学习天天向上好好学习天天向上好好学习天天向上。\n"},{"insert":"​","attributes":{"embed":{"type":"hr"}}},{"insert":"\n1111"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"2222222"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"33333333"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上。"},{"insert":"\n","attributes":{"block":"quote"}},{"insert":"很长很长的段落很长很长的文本很长很长的段落很长很长的文本很长很长的段落很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本\n"}]';
-    //String initText = r'[{"title":"好好学习天天向上"},{"insert":"123我们要好好学习天天向上好好学习天天向上好好学习天天向上。    我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上123。\n"}]';
+        r'[{"title":"好好学习天天向上"},{"insert":"我们要好好学习天天向上好好学习天天向上好好学习天天向上。\n"},{"insert":"​","attributes":{"embed":{"type":"image","source":"http://pic.netbian.com/uploads/allimg/180826/113958-1535254798fc1c.jpg"}}},{"insert":"\n"},{"insert":"​","attributes":{"embed":{"type":"hr"}}},{"insert":"\n​","attributes":{"embed":{"type":"image","source":"http://pic.netbian.com/uploads/allimg/200321/102723-1584757643a4d4.jpg"}}},{"insert":"\n1111"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"2222222"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"33333333"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上。"},{"insert":"\n","attributes":{"block":"quote"}},{"insert":"很长很长的段落很长很长的文本很长很长的段落很长很长的文本很长很长的段落很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本\n"}]';
+    //String initText = r'[{"title":"123"},{"insert":"​","attributes":{"embed":{"type":"image","source":"http://pic.netbian.com/uploads/allimg/200321/102723-1584757643a4d4.jpg"}}},{"insert":"\n"}]';
     List items = json.decode(initText) as List;
     _title = items[0]['title'];
     return Delta.fromJson(items.sublist(1));
   }
 
   void onUpdateLoading() => {
-    setState(() {
-      isLoading = _controller.isLoading;
-    })
-  };
+        setState(() {
+          isLoading = _controller.isLoading;
+        })
+      };
 
   @override
   void initState() {
@@ -43,9 +42,8 @@ class _MyEditorPageState extends State<MyEditorPage> {
     resetStatic();
 
     _controller = ZefyrController(
-      widget.inited ? NotusDocument.fromDelta(getDelta()) : NotusDocument(),
-      loadingListener: this.onUpdateLoading
-    );
+        widget.inited ? NotusDocument.fromDelta(getDelta()) : NotusDocument(),
+        loadingListener: this.onUpdateLoading);
     _controller.document.changes.listen((change) {
       print('document changed: ${change.change}');
       // 注意加上这行，文本变化的时候，可能会刷新下面的按钮。

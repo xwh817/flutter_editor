@@ -8,7 +8,8 @@ class ImageUtil {
   static final uploadPath =
       'http://www.zhuzuovip.com/test/api/v1/upload?type=post';
 
-  static Future<void> upLoadImage(String path) async {
+  /// 上传图片，成功后返回图片地址
+  static Future<String> upLoadImage(String path) async {
     if (path.startsWith('file://')) {
       path = path.replaceFirst('file://', '');
     }
@@ -18,12 +19,20 @@ class ImageUtil {
     dio.options.headers= {
       'Authorization':'token'
     };
-    var respone = await dio.post<String>(uploadPath, data: formData);
+    var response = await dio.post<String>(uploadPath, data: formData);
 
-    print('上传图片: $path, code: ${respone.statusCode}');
-    if (respone.statusCode != 200) {
-      throw (Exception('statusCode: ${respone.statusCode}'));
+    print('上传图片: $path, code: ${response.statusCode}');
+
+    if (response.statusCode != 200) {
+      throw (Exception('statusCode: ${response.statusCode}'));
     }
+    String imageUrl = response.data;
+    print('上传成功，图片地址：$imageUrl');
+
+    // 图片上传成功后删除本地temp图片
+    await ImageUtil.removeImage(path);
+
+    return imageUrl;
   }
 
   /// 图片压缩（使用Luban算法）
@@ -49,7 +58,7 @@ class ImageUtil {
       await dir.create(recursive: true);
     }
 
-    tempPath = '/storage/emulated/0/DCIM';
+    //tempPath = '/storage/emulated/0/DCIM';
     print('tempPath: $tempPath');
 
     CompressObject compressObject = CompressObject(

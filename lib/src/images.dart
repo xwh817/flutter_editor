@@ -30,6 +30,8 @@ class CustomImageDelegate implements ZefyrImageDelegate<ImageSource> {
     if (key.startsWith('asset://')) {
       final asset = AssetImage(key.replaceFirst('asset://', ''));
       return Image(image: asset);
+    } else if (key.startsWith('http')) {
+      return Image(image: NetworkImage(key));
     } else {
       // Otherwise assume this is a file stored locally on user's device.
       final file = File.fromUri(Uri.parse(key));
