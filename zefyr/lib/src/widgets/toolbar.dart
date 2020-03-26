@@ -2,12 +2,13 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notus/notus.dart';
 
 import 'buttons.dart';
+import 'image_util.dart';
 import 'scope.dart';
 import 'theme.dart';
 
@@ -333,32 +334,55 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
           children: <Widget>[
             Icon(icon, size: 24, color: color),
             SizedBox(height: 50, width: 12),
-            Text(title, style: TextStyle(color:color))
+            Text(title, style: TextStyle(color: color))
           ],
         ),
         onPressed: onPressed);
   }
 
+  /// 上传图片
+  void afterSelectImage(String image) async {
+    if (image != null) {
+      editor.controller.updateLoading(true);
+      await ImageUtil.compressImage(image).then((path) {
+        ImageUtil.upLoadImage(path).then((success) {
+          print('');
+          editor.formatSelection(NotusAttribute.embed.image(path));
+          addNextLine();
+        });
+      }).catchError((error) {
+        print('图片上传失败：$error');
+        Fluttertoast.showToast(
+            msg: "图片上传失败，请检查网络",
+            gravity: ToastGravity.CENTER,
+            textColor: Colors.grey);
+      }).whenComplete(() {
+        editor.controller.updateLoading(false);
+      });
+      /* await ImageUtil.upLoadImage(image).then((success) {
+        print('');
+        editor.formatSelection(NotusAttribute.embed.image(image));
+        addNextLine();
+      }).catchError((error) {
+        print('图片上传失败：$error');
+        Fluttertoast.showToast(
+            msg: "图片上传失败，请检查网络",
+            gravity: ToastGravity.CENTER,
+            textColor: Colors.grey);
+      }); */
+    }
+  }
+
   void pickFromGallery() async {
     final image = await editor.imageDelegate
         .pickImage(editor.imageDelegate.gallerySource);
-    if (image != null) {
-      print(image);
-      NotusAttribute value = NotusAttribute.embed.image(image);
-      print(value);
-      editor.formatSelection(value);
-      addNextLine();
-    }
+    afterSelectImage(image);
   }
 
   void pickFromCamera() async {
     final image =
         await editor.imageDelegate.pickImage(editor.imageDelegate.cameraSource);
-    if (image != null) {
-      print(image);
-      editor.formatSelection(NotusAttribute.embed.image(image));
-      addNextLine();
-    }
+    afterSelectImage(image);
   }
 
   /// 自动换一行

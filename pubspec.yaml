@@ -26,8 +26,6 @@ dependency_overrides:
     path: ./notus
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
   flutter_localizations:
     sdk: flutter
 

@@ -20,14 +20,22 @@ class _MyEditorPageState extends State<MyEditorPage> {
   ZefyrController _controller;
   final FocusNode _focusNode = FocusNode();
   String _title;
+  bool isLoading = false;
 
   Delta getDelta() {
-    String initText = r'[{"title":"好好学习天天向上"},{"insert":"我们要好好学习天天向上好好学习天天向上好好学习天天向上。\n"},{"insert":"​","attributes":{"embed":{"type":"hr"}}},{"insert":"\n1111"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"2222222"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"33333333"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上。"},{"insert":"\n","attributes":{"block":"quote"}},{"insert":"很长很长的段落很长很长的文本很长很长的段落很长很长的文本很长很长的段落很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本\n"}]';
+    String initText =
+        r'[{"title":"好好学习天天向上"},{"insert":"我们要好好学习天天向上好好学习天天向上好好学习天天向上。\n"},{"insert":"​","attributes":{"embed":{"type":"hr"}}},{"insert":"\n1111"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"2222222"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"33333333"},{"insert":"\n","attributes":{"block":"ul"}},{"insert":"好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上好好学习天天向上。"},{"insert":"\n","attributes":{"block":"quote"}},{"insert":"很长很长的段落很长很长的文本很长很长的段落很长很长的文本很长很长的段落很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本很长很长的文本\n"}]';
     //String initText = r'[{"title":"好好学习天天向上"},{"insert":"123我们要好好学习天天向上好好学习天天向上好好学习天天向上。    我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上好好学习天天向上好好学习天天向上。我们要好好学习天天向上123。\n"}]';
     List items = json.decode(initText) as List;
     _title = items[0]['title'];
     return Delta.fromJson(items.sublist(1));
   }
+
+  void onUpdateLoading() => {
+    setState(() {
+      isLoading = _controller.isLoading;
+    })
+  };
 
   @override
   void initState() {
@@ -35,8 +43,11 @@ class _MyEditorPageState extends State<MyEditorPage> {
     resetStatic();
 
     _controller = ZefyrController(
-        widget.inited ? NotusDocument.fromDelta(getDelta()) : NotusDocument());
+      widget.inited ? NotusDocument.fromDelta(getDelta()) : NotusDocument(),
+      loadingListener: this.onUpdateLoading
+    );
     _controller.document.changes.listen((change) {
+      print('document changed: ${change.change}');
       // 注意加上这行，文本变化的时候，可能会刷新下面的按钮。
       setState(() {});
     });
@@ -89,9 +100,7 @@ class _MyEditorPageState extends State<MyEditorPage> {
                 child: FlatButton(
                   padding: EdgeInsets.symmetric(horizontal: 0),
                   child: Text('草稿箱', style: buttonStyleGrey),
-                  onPressed: () {
-                    
-                  },
+                  onPressed: () {},
                 ),
               ),
               Container(
@@ -101,29 +110,38 @@ class _MyEditorPageState extends State<MyEditorPage> {
                   padding: EdgeInsets.symmetric(horizontal: 0),
                   child: Text('发表', style: buttonStyle),
                   onPressed: () {
-                    String text = _controller.document.toJsonText(_controller.title);
+                    String text =
+                        _controller.document.toJsonText(_controller.title);
                     print("发表：${_controller.document.length}, content:$text");
                     if (_controller.document.length <= 1) {
                       _showInfoDialog('您需要先写点东西，然后才能发表哦');
-                    } else if (_controller.title.length ==0) {
+                    } else if (_controller.title.length == 0) {
                       _showInfoDialog('您需要填写标题哦');
                     }
-
                   },
                 ),
               ),
             ],
           )),
-      body: ZefyrScaffold(
-        child: ZefyrField(
-          height: double.infinity,
-          controller: _controller,
-          focusNode: _focusNode,
-          autofocus: false,
-          imageDelegate: CustomImageDelegate(),
-          physics: ClampingScrollPhysics(),
-          //mode: widget.inited ? ZefyrMode.select : ZefyrMode.edit,
-        ),
+      body: Stack(
+        children: <Widget>[
+          ZefyrScaffold(
+            child: ZefyrField(
+              height: double.infinity,
+              controller: _controller,
+              focusNode: _focusNode,
+              autofocus: false,
+              imageDelegate: CustomImageDelegate(),
+              physics: ClampingScrollPhysics(),
+              //mode: widget.inited ? ZefyrMode.select : ZefyrMode.edit,
+            ),
+          ),
+          this.isLoading
+              ? Center(
+                  child: CircularProgressIndicator(strokeWidth: 2.0),
+                )
+              : Container()
+        ],
       ),
     );
 

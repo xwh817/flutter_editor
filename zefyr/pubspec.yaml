@@ -16,8 +16,10 @@ dependencies:
   meta: ^1.1.0
   quiver_hashcode: ^2.0.0
   flutter_screenutil: ^1.0.2
+  dio: 3.0.9
+  fluttertoast: ^4.0.0
+  flutter_luban: ^0.1.11
+  path_provider: ^1.6.5
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
   pedantic: ^1.0.0

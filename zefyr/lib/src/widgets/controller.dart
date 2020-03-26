@@ -27,13 +27,16 @@ enum FocusOwner {
 
 /// Controls instance of [ZefyrEditor].
 class ZefyrController extends ChangeNotifier {
-  ZefyrController(NotusDocument document)
+  ZefyrController(NotusDocument document, {VoidCallback loadingListener})
       : assert(document != null),
-        _document = document;
+        _document = document, _loadingListener = loadingListener;
 
   /// Zefyr document managed by this controller.
   NotusDocument get document => _document;
   NotusDocument _document;
+
+  bool isLoading = false;
+  VoidCallback _loadingListener; 
 
   /// Currently selected text within the [document].
   TextSelection get selection => _selection;
@@ -75,6 +78,13 @@ class ZefyrController extends ChangeNotifier {
     _selection = value;
     _lastChangeSource = source;
     _ensureSelectionBeforeLastBreak();
+  }
+
+  void updateLoading(bool isLoading){
+    if (_loadingListener != null) {
+      this.isLoading = isLoading;
+      _loadingListener();
+    }
   }
 
   @override
