@@ -19,7 +19,8 @@ dependencies:
   flutter_screenutil: ^1.0.2
   dio: 3.0.9
   fluttertoast: ^4.0.0
-  flutter_luban: ^0.1.11
+  flutter_luban: 
+    path: ../flutter_luban
   path_provider: ^1.6.5
 
 dev_dependencies:
