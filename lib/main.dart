@@ -4,7 +4,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'src/my_editor.dart';
+import 'my_editor.dart';
 
 import 'localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

@@ -4,7 +4,7 @@ import 'package:quill_delta/quill_delta.dart';
 import 'dart:convert';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'images.dart';
+import 'src/images.dart';
 
 class MyEditorPage extends StatefulWidget {
   final bool darkTheme;
