@@ -402,9 +402,9 @@ class AttributeTheme {
         linePadding: EdgeInsets.symmetric(vertical: 2.0),
       ),
       quote: BlockTheme(
-        padding: EdgeInsets.symmetric(vertical: 8.0),
+        padding: EdgeInsets.fromLTRB(12.0, 24.0, 12.0, 18.0),
         textStyle: TextStyle(
-          color: defaultLineTheme.textStyle.color.withOpacity(0.6),
+          color: defaultLineTheme.textStyle.color.withOpacity(0.5),
         ),
         inheritLineTextStyle: true,
       ),

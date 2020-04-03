@@ -90,16 +90,22 @@ class RenderHorizontalRule extends RenderEditableBox {
     //final paint = ui.Paint()..color = Colors.grey.shade200;
     //context.canvas.drawRect(rect.shift(offset), paint);
     final paint = ui.Paint()
-      ..color = _isDarkTheme ? Color(0x99FFFFFF) : Colors.black45;
+      ..color = _isDarkTheme ? Color(0x99FFFFFF) : Colors.black38;
     double center = size.width / 2;
-    double itemSize = 1.5;
-    double itemPadding = 20.0;
+    double itemPadding = 26.0;
     double dy = _kPaddingBottom / 2;
-    context.canvas
-        .drawCircle(Offset(center - itemPadding, dy), itemSize, paint);
-    context.canvas.drawCircle(Offset(center, dy), itemSize, paint);
-    context.canvas
-        .drawCircle(Offset(center + itemPadding, dy), itemSize, paint);
+    _drawItem(context, center - itemPadding, dy, paint);
+    _drawItem(context, center, dy, paint);
+    _drawItem(context, center + itemPadding, dy, paint);
+  }
+
+  void _drawItem(PaintingContext context, double dx, double dy, Paint paint){
+    context.canvas.drawRect(
+        Rect.fromCenter(
+            center: Offset(dx, dy),
+            width: 4,
+            height: 1.5),
+        paint);
   }
 
   @override

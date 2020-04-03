@@ -18,6 +18,13 @@ class ZefyrQuote extends StatelessWidget {
     final theme = ZefyrTheme.of(context);
     final style = theme.attributeTheme.quote.textStyle;
     List<Widget> items = [];
+    items.add(Align(
+        child: ImageIcon(
+            AssetImage(ZefyrTheme.isThemeDark(context)
+                ? "images/quote_white.png"
+                : "images/quote_black.png"),
+            size: 16),
+        alignment: Alignment.centerLeft));
     for (var line in node.children) {
       items.add(_buildLine(context, line, style, theme.indentWidth));
     }
@@ -31,7 +38,8 @@ class ZefyrQuote extends StatelessWidget {
     );
   }
 
-  Widget _buildLine(BuildContext context, Node node, TextStyle blockStyle, double indentSize) {
+  Widget _buildLine(BuildContext context, Node node, TextStyle blockStyle,
+      double indentSize) {
     LineNode line = node;
 
     Widget content;
@@ -41,16 +49,18 @@ class ZefyrQuote extends StatelessWidget {
       content = ZefyrParagraph(node: line, blockStyle: blockStyle);
     }
 
-    final row = Row(children: <Widget>[Expanded(child: content)]);
-    return Container(
+    return content;
+
+    //final row = Row(children: <Widget>[Expanded(child: content)]);
+    /* return Container(
       decoration: BoxDecoration(
-        color: Color(ZefyrTheme.isThemeDark(context)? 0x11666666 : 0xFFF6F6F6),
-        border: Border(
+        color: Color(ZefyrTheme.isThemeDark(context) ? 0x11666666 : 0xFFF6F6F6),
+        /* border: Border(
           left: BorderSide(width: 4.0, color: Color(0xFF8E8E8E)),
-        ),
+        ), */
       ),
       padding: EdgeInsets.only(left: indentSize),
-      child: row,
-    );
+      child: content,
+    ); */
   }
 }
