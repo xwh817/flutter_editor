@@ -485,7 +485,6 @@ class _DefaultZefyrToolbarDelegate implements ZefyrToolbarDelegate {
     ZefyrToolbarAction.bulletList: Icons.format_list_bulleted,
     ZefyrToolbarAction.numberList: Icons.format_list_numbered,
     ZefyrToolbarAction.code: Icons.code,
-    ZefyrToolbarAction.quote: Icons.format_quote,
     ZefyrToolbarAction.horizontalRule: Icons.more_horiz,
     ZefyrToolbarAction.image: Icons.add_photo_alternate,
     ZefyrToolbarAction.cameraImage: Icons.photo_camera,
@@ -497,6 +496,7 @@ class _DefaultZefyrToolbarDelegate implements ZefyrToolbarDelegate {
 
   // 本地Icons
   static const localButtonIcons = {
+    ZefyrToolbarAction.quote: "images/quote_white.png",
     ZefyrToolbarAction.addImage: "images/image_add.png",
     ZefyrToolbarAction.divider: "images/divider.png",
   };
@@ -511,6 +511,14 @@ class _DefaultZefyrToolbarDelegate implements ZefyrToolbarDelegate {
     ZefyrToolbarAction.confirm: 20.0,
     ZefyrToolbarAction.hideKeyboard: 26.0,
   };
+
+  _getMyIconSize(ZefyrToolbarAction action){
+    if (action == ZefyrToolbarAction.quote) {
+      return 16.0;
+    } else {
+      return 20.0;
+    }
+  }
 
   static const kDefaultButtonTexts = {
     ZefyrToolbarAction.headingLevel1: 'H1',
@@ -535,7 +543,7 @@ class _DefaultZefyrToolbarDelegate implements ZefyrToolbarDelegate {
       return ZefyrButton.myIcon(
         action: action,
         path: localButtonIcons[action],
-        iconSize: myIconSize,
+        iconSize: _getMyIconSize(action),
         onPressed: onPressed,
       );
     } else {

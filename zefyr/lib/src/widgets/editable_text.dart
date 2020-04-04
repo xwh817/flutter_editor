@@ -298,7 +298,7 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
           hintStyle:
               TextStyle(color: hintTextColor, fontWeight: FontWeight.normal),
           border: InputBorder.none,
-          contentPadding: EdgeInsets.fromLTRB(0, 16, 0, 8), // 标题的padding
+          contentPadding: EdgeInsets.fromLTRB(0, 18, 0, 10), // 标题的padding
         ));
   }
 

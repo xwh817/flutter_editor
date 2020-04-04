@@ -208,7 +208,7 @@ class RenderEditableImage extends RenderBox
     super.paint(context, offset + _childOffset);
   }
 
-  static const double kHorizontalPadding = 1.0;
+  static const double kHorizontalPadding = 0.0;
 
   Size _lastChildSize;
 
@@ -231,28 +231,41 @@ class RenderEditableImage extends RenderBox
       //final width = constraints.maxWidth - kHorizontalPadding * 2;
       double width;
       if (screenWidth > 0) {
-        width = screenWidth / 2;
+        width = screenWidth;
       } else {
         width = constraints.maxWidth - kHorizontalPadding * 2;
       }
-      final childConstraints = constraints.copyWith(
+
+      _setSize(width);
+
+      // 如果是竖图就宽度的一半，如果横图就0.75
+      /* if (child.size.width > child.size.height) {
+        print('resize image: ${child.size}');
+        width = screenWidth * 0.75;
+        _setSize(width);
+      } */
+
+
+    } else {
+      performResize();
+    }
+  }
+  
+  void _setSize(double width){
+    final childConstraints = constraints.copyWith(
         minWidth: 0.0,
         maxWidth: width,
         minHeight: 0.0,
         maxHeight: double.infinity,   // 最大高度不限制
       );
 
-      print("###### childConstraints: " + childConstraints.toString());
+      //print("###### childConstraints: " + childConstraints.toString());
 
       child.layout(childConstraints, parentUsesSize: true);
       _lastChildSize = child.size;
       size = Size(constraints.maxWidth, _lastChildSize.height);
 
+      print("###### image size: " + child.size.toString());
 
-      print("###### image size: " + size.toString());
-
-    } else {
-      performResize();
-    }
   }
 }
