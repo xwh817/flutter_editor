@@ -496,7 +496,7 @@ class _DefaultZefyrToolbarDelegate implements ZefyrToolbarDelegate {
 
   // 本地Icons
   static const localButtonIcons = {
-    ZefyrToolbarAction.quote: "images/quote_white.png",
+    ZefyrToolbarAction.quote: "images/quote.png",
     ZefyrToolbarAction.addImage: "images/image_add.png",
     ZefyrToolbarAction.divider: "images/divider.png",
   };

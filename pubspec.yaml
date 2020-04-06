@@ -43,8 +43,7 @@ flutter:
   assets:
     - images/image_add.png
     - images/divider.png
-    - images/quote_black.png
-    - images/quote_white.png
+    - images/quote.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
