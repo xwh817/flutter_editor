@@ -512,7 +512,7 @@ class _DefaultZefyrToolbarDelegate implements ZefyrToolbarDelegate {
     ZefyrToolbarAction.hideKeyboard: 26.0,
   };
 
-  _getMyIconSize(ZefyrToolbarAction action){
+  double _getMyIconSize(ZefyrToolbarAction action){
     if (action == ZefyrToolbarAction.quote) {
       return 16.0;
     } else {
