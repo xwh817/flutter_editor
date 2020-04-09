@@ -99,6 +99,12 @@ class InputConnectionController implements TextInputClient {
     // no-op
   }
 
+
+  @override
+  // TODO: implement currentTextEditingValue
+  TextEditingValue get currentTextEditingValue => null;
+  
+
   @override
   void updateEditingValue(TextEditingValue value) {
     if (_sentRemoteValues.contains(value)) {
