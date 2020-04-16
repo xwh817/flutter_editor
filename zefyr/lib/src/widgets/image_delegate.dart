@@ -11,6 +11,9 @@ import 'package:zefyr/zefyr.dart';
 /// Custom image delegate used by this example to load image from application
 /// assets.
 class CustomImageDelegate implements ZefyrImageDelegate<ImageSource> {
+
+  const CustomImageDelegate();
+
   @override
   ImageSource get cameraSource => ImageSource.camera;
 

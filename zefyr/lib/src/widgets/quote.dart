@@ -19,7 +19,7 @@ class ZefyrQuote extends StatelessWidget {
     final style = theme.attributeTheme.quote.textStyle;
     List<Widget> items = [];
     items.add(Align(
-        child: ImageIcon(AssetImage("images/quote.png", package: 'editor'),color: style.color, size: 16),
+        child: ImageIcon(AssetImage("images/quote.png", package: 'zefyr'),color: style.color, size: 16),
         alignment: Alignment.centerLeft));
     for (var line in node.children) {
       items.add(_buildLine(context, line, style, theme.indentWidth));

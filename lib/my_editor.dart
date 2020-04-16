@@ -4,12 +4,11 @@ import 'package:quill_delta/quill_delta.dart';
 import 'dart:convert';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'src/images.dart';
-
 class MyEditorPage extends StatefulWidget {
   final bool darkTheme;
   final bool inited;
-  MyEditorPage({Key key, this.darkTheme = false, this.inited = false})
+  final bool editable;
+  MyEditorPage({Key key, this.darkTheme = false, this.inited = false, this.editable = true})
       : super(key: key);
 
   @override
@@ -131,10 +130,7 @@ class _MyEditorPageState extends State<MyEditorPage> {
               height: double.infinity,
               controller: _controller,
               focusNode: _focusNode,
-              autofocus: false,
-              imageDelegate: CustomImageDelegate(),
-              physics: ClampingScrollPhysics(),
-              //mode: widget.inited ? ZefyrMode.select : ZefyrMode.edit,
+              mode: widget.editable ? ZefyrMode.edit : ZefyrMode.select,
             ),
           ),
           this.isLoading

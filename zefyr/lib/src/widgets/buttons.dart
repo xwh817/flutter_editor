@@ -192,7 +192,7 @@ class RawZefyrButton extends StatelessWidget {
     Color iconColor,
     @required this.color,
     @required this.onPressed,
-  })  : child = ImageIcon(AssetImage(path, package: 'editor'), size: size, color: iconColor),
+  })  : child = ImageIcon(AssetImage(path, package: 'zefyr'), size: size, color: iconColor),
         super();
 
   /// Toolbar action associated with this button.

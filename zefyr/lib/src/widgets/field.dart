@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'controller.dart';
 import 'editor.dart';
 import 'image.dart';
+import 'image_delegate.dart';
 import 'mode.dart';
 import 'toolbar.dart';
 
@@ -37,8 +38,8 @@ class ZefyrField extends StatefulWidget {
     this.autofocus = false,
     this.mode,
     this.toolbarDelegate,
-    this.imageDelegate,
-    this.physics,
+    this.imageDelegate = const CustomImageDelegate(),
+    this.physics = const ClampingScrollPhysics(),
     this.keyboardAppearance,
   }) : super(key: key);
 

@@ -280,6 +280,7 @@ class _ZefyrEditableTextState extends State<ZefyrEditableText>
     return TextField(
         key: globalKey,
         autofocus: widget.controller.title.isEmpty,
+        readOnly: !widget.mode.canEdit,
         controller: controller,
         onChanged: (text) {
           widget.controller.title = text;

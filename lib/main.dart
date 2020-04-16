@@ -71,6 +71,11 @@ class HomePage extends StatelessWidget {
                 builder: (context) => MyEditorPage(darkTheme: true, inited: true))),
             child: Text('打开文章(夜间)'),
           ),
+          RaisedButton(
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => MyEditorPage(darkTheme: false, inited: true, editable: false))),
+            child: Text('打开文章(不可编辑)'),
+          ),
           Expanded(child: Container()),
         ],
       ),

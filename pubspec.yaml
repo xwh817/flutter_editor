@@ -19,7 +19,6 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  image_picker: ^0.6.1
   flutter_screenutil: ^1.0.2
   zefyr:
     path: ./zefyr
@@ -40,10 +39,6 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # 导入images下面的所有图片
-  assets:
-    - images/
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 

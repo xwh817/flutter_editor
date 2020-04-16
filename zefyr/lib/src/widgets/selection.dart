@@ -238,6 +238,10 @@ class _ZefyrSelectionOverlayState extends State<ZefyrSelectionOverlay>
 
   void _handleTap() {
     print('_handleTap');
+    // 处于不可编辑状态，直接返回
+    if (!_scope.mode.canEdit) {
+      return;
+    }
     assert(_lastTapDownPosition != null);
     final globalPoint = _lastTapDownPosition;
     _lastTapDownPosition = null;
