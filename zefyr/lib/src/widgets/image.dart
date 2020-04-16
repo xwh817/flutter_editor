@@ -182,8 +182,9 @@ class RenderEditableImage extends RenderBox
     final pos = position.offset - node.documentOffset;
     Offset caretOffset = _childOffset - Offset(kHorizontalPadding, 0.0);
     if (pos == 1) {
+      // 加上1.0的右间距，不然看不见了
       caretOffset =
-          caretOffset + Offset(_lastChildSize.width + kHorizontalPadding, 0.0);
+          caretOffset + Offset(_lastChildSize.width + kHorizontalPadding - 1.0, 0.0);
     }
     return caretOffset;
   }

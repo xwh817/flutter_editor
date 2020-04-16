@@ -72,7 +72,6 @@ class _MyEditorPageState extends State<MyEditorPage> {
       print("屏幕宽度：${size.width}, 密度：${mediaQueryData.devicePixelRatio}");
 
       // 屏幕适配
-      ScreenUtil.init(context);
       // allowFontScaling设置字体大小根据系统的“字体大小”辅助选项来进行缩放,默认为false
       ScreenUtil.init(context, width: 360, height: 640);
     }
