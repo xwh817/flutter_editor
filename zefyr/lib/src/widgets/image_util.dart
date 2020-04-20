@@ -8,6 +8,11 @@ class ImageUtil {
   static final uploadPath =
       'http://www.zhuzuovip.com/test/api/v1/upload?type=post';
 
+  static String uploadToken = '';
+  static void setToken(String token){
+    uploadToken = token;
+  }
+
   /// 上传图片，成功后返回图片地址
   static Future<String> upLoadImage(String path) async {
     if (path.startsWith('file://')) {
@@ -17,7 +22,7 @@ class ImageUtil {
         FormData.fromMap({"file": await MultipartFile.fromFile(path)});
     Dio dio = Dio();
     dio.options.headers= {
-      'Authorization':'token'
+      'Authorization':uploadToken
     };
     var response = await dio.post<String>(uploadPath, data: formData);
 

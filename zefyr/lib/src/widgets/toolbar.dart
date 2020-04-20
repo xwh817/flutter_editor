@@ -112,7 +112,7 @@ class ZefyrToolbarScaffold extends StatelessWidget {
 
 /// Toolbar for [ZefyrEditor].
 class ZefyrToolbar extends StatefulWidget implements PreferredSizeWidget {
-  static const kToolbarHeight = 50.0;
+  static const kToolbarHeight = 46.0;
 
   const ZefyrToolbar({
     Key key,
@@ -423,6 +423,17 @@ class _ZefyrButtonListState extends State<ZefyrButtonList> {
     //Timer.run(_handleScroll);
   }
 
+  bool isInited = false;
+  void _initScreenUtil(){
+    if (!isInited) {
+      isInited = true;
+      // 屏幕适配
+      ScreenUtil.init(context);
+      // allowFontScaling设置字体大小根据系统的“字体大小”辅助选项来进行缩放,默认为false
+      ScreenUtil.init(context, width: 360, height: 640);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     /* final theme = ZefyrTheme.of(context).toolbarTheme;
@@ -433,11 +444,7 @@ class _ZefyrButtonListState extends State<ZefyrButtonList> {
       children: widget.buttons,
       physics: ClampingScrollPhysics(),
     ); */
-
-    // 屏幕适配
-    ScreenUtil.init(context);
-    // allowFontScaling设置字体大小根据系统的“字体大小”辅助选项来进行缩放,默认为false
-    ScreenUtil.init(context, width: 360, height: 640);
+    _initScreenUtil();
 
     return Row(children: widget.buttons);
     /* final leftArrow = _showLeftArrow
