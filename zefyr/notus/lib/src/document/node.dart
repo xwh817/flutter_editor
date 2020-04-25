@@ -25,10 +25,10 @@ abstract class Node extends LinkedListEntry<Node> {
   ContainerNode _parent;
 
   /// Returns `true` if this node is the first node in the [parent] list.
-  bool get isFirst => list.first == this;
+  bool get isFirst => list != null && list.first == this;
 
   /// Returns `true` if this node is the last node in the [parent] list.
-  bool get isLast => list.last == this;
+  bool get isLast => list != null && list.last == this;
 
   /// Length of this node in characters.
   int get length;
@@ -46,14 +46,14 @@ abstract class Node extends LinkedListEntry<Node> {
     var node = this;
     do {
       node = node.previous;
-      offset += node.length;
-    } while (!node.isFirst);
+      offset += (node!=null ? node.length : 0);
+    } while (node!=null && !node.isFirst);
     return offset;
   }
 
   /// Offset in characters of this node in the document.
   int get documentOffset {
-    final parentOffset = (_parent is! RootNode) ? _parent.documentOffset : 0;
+    final parentOffset = (_parent != null && _parent is! RootNode) ? _parent.documentOffset : 0;
     return parentOffset + offset;
   }
 

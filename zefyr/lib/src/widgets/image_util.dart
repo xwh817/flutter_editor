@@ -9,7 +9,7 @@ class ImageUtil {
       'http://www.zhuzuovip.com/test/api/v1/upload?type=post';
 
   static String uploadToken = '';
-  static void setToken(String token){
+  static void setToken(String token) {
     uploadToken = token;
   }
 
@@ -21,21 +21,24 @@ class ImageUtil {
     FormData formData =
         FormData.fromMap({"file": await MultipartFile.fromFile(path)});
     Dio dio = Dio();
-    dio.options.headers= {
-      'Authorization':uploadToken
-    };
-    var response = await dio.post<String>(uploadPath, data: formData);
+    dio.options.headers = {'Authorization': uploadToken};
 
-    print('上传图片: $path, code: ${response.statusCode}');
+    print('token:$uploadToken');
+    String imageUrl = await dio.post<String>(uploadPath, data: formData).then((response) {
+      print('上传成功: $path');
+      return response.data;
+    }).catchError((error) {
+      // 上传失败，把错误抛出去
+      print('上传失败：$error');
+      //return 'http://www.zhuzuovip.com/test/api/v1/image/34';
+      throw error;
+    }).whenComplete(() {
+      // 图片上传后删除本地temp图片
+      ImageUtil.removeImage(path);
+    });
 
-    if (response.statusCode != 200) {
-      throw (Exception('statusCode: ${response.statusCode}'));
-    }
-    String imageUrl = response.data;
-    print('上传成功，图片地址：$imageUrl');
 
-    // 图片上传成功后删除本地temp图片
-    await ImageUtil.removeImage(path);
+    print('接口返回的图片地址：$imageUrl');
 
     return imageUrl;
   }
@@ -67,10 +70,9 @@ class ImageUtil {
     print('tempPath: $tempPath');
 
     CompressObject compressObject = CompressObject(
-      imageFile: imageFile, //image
-      path: tempPath, //compress to path
-      step: 9
-    );
+        imageFile: imageFile, //image
+        path: tempPath, //compress to path
+        step: 9);
 
     print('file: $path: before size:${imageFile.lengthSync() ~/ 1024} kb');
 
@@ -78,7 +80,8 @@ class ImageUtil {
     String tempFilePath = await Luban.compressImage(compressObject);
     int end = DateTime.now().millisecondsSinceEpoch;
 
-    print('after compress: $path, size: ${File(tempFilePath).lengthSync() ~/ 1024} kb');
+    print(
+        'after compress: $path, size: ${File(tempFilePath).lengthSync() ~/ 1024} kb');
     print('耗时：${(end - start)}豪秒');
 
     return tempFilePath;
@@ -99,6 +102,7 @@ class ImageUtil {
   static Future<void> removeImage(String path) async {
     File file = File(path);
     if (file.existsSync()) {
+      print('删除临时文件:$path');
       file.deleteSync();
     }
   }
