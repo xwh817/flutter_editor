@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:image/image.dart';
 import 'package:dio/dio.dart';
+import 'dart:convert';
 import 'package:flutter_luban/flutter_luban.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -21,22 +22,23 @@ class ImageUtil {
     FormData formData =
         FormData.fromMap({"file": await MultipartFile.fromFile(path)});
     Dio dio = Dio();
-    dio.options.headers = {'Authorization': uploadToken};
+    dio.options.headers = {'Authorization': 'Bearer $uploadToken'};
 
-    print('token:$uploadToken');
-    String imageUrl = await dio.post<String>(uploadPath, data: formData).then((response) {
-      print('上传成功: $path');
-      return response.data;
+    String imageUrl =
+        await dio.post<String>(uploadPath, data: formData).then((response) {
+      var data = jsonDecode(response.data);
+      if (data['success']) {
+        return data['data']['image_src'];
+      } else {
+        throw Exception('接口返回：success:false');
+      }
     }).catchError((error) {
-      // 上传失败，把错误抛出去
       print('上传失败：$error');
-      //return 'http://www.zhuzuovip.com/test/api/v1/image/34';
       throw error;
     }).whenComplete(() {
       // 图片上传后删除本地temp图片
       ImageUtil.removeImage(path);
     });
-
 
     print('接口返回的图片地址：$imageUrl');
 
