@@ -43,3 +43,6 @@ Icon?
 
 Pods/
 .symlinks/
+
+
+ios\Flutter\flutter_export_environment.sh

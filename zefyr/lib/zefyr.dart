@@ -10,6 +10,7 @@ library zefyr;
 export 'package:notus/notus.dart';
 // export能在外面被调用到
 export 'src/widgets/image_util.dart';
+export 'src/widgets/image_delegate.dart';
 
 export 'src/widgets/buttons.dart' hide HeadingButton, LinkButton;
 export 'src/widgets/code.dart';

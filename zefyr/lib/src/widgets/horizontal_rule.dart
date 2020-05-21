@@ -85,26 +85,34 @@ class RenderHorizontalRule extends RenderEditableBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    //double padding = 40.0;
-    //final rect = Rect.fromLTWH(padding, 20.0, size.width - padding*2, _kThickness);
-    //final paint = ui.Paint()..color = Colors.grey.shade200;
-    //context.canvas.drawRect(rect.shift(offset), paint);
-    final paint = ui.Paint()
+    /* var padding = 40.0;
+    final rect = Rect.fromLTWH(padding, 20.0, size.width - padding*2, _kThickness);
+    final paint = ui.Paint()..color = Colors.red;
+    context.canvas.drawRect(rect.shift(offset), paint); */
+   final paint = ui.Paint()
       ..color = _isDarkTheme ? Color(0x99FFFFFF) : Colors.black38;
-    double center = size.width / 2;
-    double itemPadding = 26.0;
-    double dy = _kPaddingBottom / 2;
-    _drawItem(context, center - itemPadding, dy, paint);
-    _drawItem(context, center, dy, paint);
-    _drawItem(context, center + itemPadding, dy, paint);
+    var center = size.width / 2;
+    var itemPadding = 26.0;
+    var dy = _kPaddingBottom / 2;
+    _drawItem(context, center - itemPadding, dy, paint, offset);
+    _drawItem(context, center, dy, paint, offset);
+    _drawItem(context, center + itemPadding, dy, paint, offset); 
+  
+    
+    //_drawItem(context, 100, 100, paint);
+/* 
+   context.canvas.drawRect(Rect.fromCenter(
+            center: Offset(size.width / 2, 10),
+            width: 20,
+            height: 15).shift(offset), paint); */
   }
 
-  void _drawItem(PaintingContext context, double dx, double dy, Paint paint){
+  void _drawItem(PaintingContext context, double dx, double dy, Paint paint, Offset offset){
     context.canvas.drawRect(
         Rect.fromCenter(
             center: Offset(dx, dy),
             width: 4,
-            height: 1.5),
+            height: 1.5).shift(offset),
         paint);
   }
 

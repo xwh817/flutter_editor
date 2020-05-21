@@ -76,7 +76,7 @@ class HomePage extends StatelessWidget {
           RaisedButton(
             onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => MyEditorPage(darkTheme: false, inited: true, editable: false))),
-            child: Text('打开文章(不可编辑)'),
+            child: Text('打开文章(ZefyrView)'),
           ),
           Expanded(child: Container()),
         ],
