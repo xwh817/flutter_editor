@@ -1,8 +1,11 @@
-# example
+# Flutter编辑器
 
-A new Flutter project.
+对Zefyr编辑器的二次封装，修改了很多使用细节问题。
 
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
+- 支持文章标题的输入
+- 自定义分割线
+- 自定义引用效果
+- 修改行高间距等等
+- 设置图片宽高度
+- 实现图片压缩、上传、显示网络图片。
+- 解决点击长文本时上下跳动的问题。
