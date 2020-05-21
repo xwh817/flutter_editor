@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 import 'dart:io';
 
+import 'package:editor/splash.dart';
 import 'package:flutter/material.dart';
 import 'my_editor.dart';
 
@@ -22,13 +23,14 @@ List<Locale> ios = [
   const Locale('zh', 'CH'),
 ];
 
+/// 整个APP的入口，管理APP主题、路由、主页等等。
 class ZefyrApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Editor',
-      home: HomePage(),
+      home: SplashPage(),
       routes: {
         "/editor_light": (context) => MyEditorPage(darkTheme: false),
         "/editor_dark": (context) => MyEditorPage(darkTheme: true),

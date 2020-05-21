@@ -343,7 +343,8 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
   /// 上传图片
   void afterSelectImage(String image) async {
     if (image != null) {
-      editor.controller.updateLoading(true);
+      /// 图片压缩、上传流程，改为开源项目后，这里注释掉
+      /* editor.controller.updateLoading(true);
       await ImageUtil.compressImage(image).then((path) {
         return ImageUtil.upLoadImage(path);
       }).then((imageUrl) {
@@ -357,18 +358,11 @@ class ZefyrToolbarState extends State<ZefyrToolbar>
             textColor: Colors.grey);
       }).whenComplete(() {
         editor.controller.updateLoading(false);
-      });
-      /* await ImageUtil.upLoadImage(image).then((success) {
-        print('');
-        editor.formatSelection(NotusAttribute.embed.image(image));
-        addNextLine();
-      }).catchError((error) {
-        print('图片上传失败：$error');
-        Fluttertoast.showToast(
-            msg: "图片上传失败，请检查网络",
-            gravity: ToastGravity.CENTER,
-            textColor: Colors.grey);
       }); */
+
+      editor.formatSelection(NotusAttribute.embed.image(image));
+      addNextLine();
+      
     }
   }
 
